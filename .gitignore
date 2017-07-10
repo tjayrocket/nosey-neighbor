@@ -5,8 +5,6 @@ temp-assets
 
 # MongoDB
 db
-.test.env
-.env
 
 ### Node ###
 # Logs
