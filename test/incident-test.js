@@ -17,16 +17,24 @@ describe('Testing Incident Model', () => {
   describe('Testing POST', () => {
     it('should return 200 - blah blah', () => {
     });
+
+    it('should return with 404 - Valid request, no id :', () => {
+      return superagent.get(`${API_URL}/api/blueTeam/`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+    });
+
   });
 
   describe('Testing GET - Incident Array', () => {
     it('should return 200 - blah blah', () => {
     });
-  });
 
-  describe('Testing GET - Whole Object', () => {
     it('should return 200 - blah blah', () => {
     });
+
+    it('Should return 404')
   });
 
   it('should return with 404 - Valid request, no id :', () => {
