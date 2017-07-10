@@ -59,7 +59,7 @@ describe('Testing Profile Model', () => {
     });
 
     it('should return 200 - blah blah', () => {
-      
+
     });
 
     it('Should return with 404 not found', () => {
@@ -71,12 +71,5 @@ describe('Testing Profile Model', () => {
           expect(res.status).toEqual(404);
         });
     });
-  });
-
-  it('should return with 404 - Valid request, no id :', () => {
-    return superagent.get(`${API_URL}/api/incidents/`)
-      .catch(res => {
-        expect(res.status).toEqual(404);
-      });
   });
 });

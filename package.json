@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
-    "run": "node index.js",
+    "start": "node index.js",
     "watch": "nodemon index.js",
     "start-db": "mkdir -p ./db && mongod --dbpath ./db",
     "stop-db": "sudo killall mongod",
