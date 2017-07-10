@@ -34,7 +34,9 @@ describe('Testing Incident Model', () => {
     it('should return 200 - blah blah', () => {
     });
 
-    it('Should return 404')
+    it('Should return 404', () => {
+
+    });
   });
 
   it('should return with 404 - Valid request, no id :', () => {
