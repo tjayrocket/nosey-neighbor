@@ -1,27 +1,26 @@
 {
+  "env": {
+    "browser": true,
+    "node": true,
+    "commonjs": true,
+    "mocha": true,
+    "es6": true
+  },
   "globals": {
     "err": true,
     "req": true,
     "res": true,
     "next": true
   },
-  "env": {
-    "es6": true,
-    "node": true,
-    "browser": true,
-    "mocha": true
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "sourceType": "module"
   },
   "rules": {
     "no-console": "off",
     "indent": [ "error", 2 ],
-    "semi": ["error", "always"],
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
     "comma-dangle": ["error", "always-multiline"],
-    "quotes": ["error", "single", { "allowTemplateLiterals": true }]
-  },
-  # "ecmaFeatures": {
-  #   "modules": true,
-  #   "impliedStrict": true,
-  #   "experimentalObjectRestSpread": true
-  # },
-  "extends": "eslint:recommended"
+    "semi": [ "error", "always" ]
+  }
 }
