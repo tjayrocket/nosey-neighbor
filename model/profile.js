@@ -7,17 +7,7 @@ const profileSchema = mongoose.Schema({
   name: {type: String, required: true, minlength: 1},
   residenceId: {type: mongoose.Schema.Types.ObjectId, ref: 'residence'},
   phone: {type: String, minlength: 1},
+  bio: {type: String, minlength: 1},
 });
 
-
-
-
-
-
-const residenceSchema = mongoose.Schema({
-  address: {type: String, required: true, minlength: 1},
-  occupants: [{type: String}],
-  incidents: [{type: mongoose.Schema.Types.ObjectId, ref: 'incident'}],
-});
-
-module.exports = mongoose.model('residence', residenceSchema);
+module.exports = mongoose.model('profile', profileSchema);
