@@ -65,6 +65,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.test.env
 aws.keys
 
 ### OSX ###
