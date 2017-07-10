@@ -12,7 +12,7 @@ const API_URL = process.env.API_URL;
 describe('Testing Incident Model', () => {
   before(server.start);
   after(server.stop);
-  // afterEach(cleanDB);
+  afterEach(cleanDB);
 
   describe('Testing POST', () => {
     it('should return 200 - blah blah', () => {
