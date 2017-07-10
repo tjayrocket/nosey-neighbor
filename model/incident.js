@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const incidentSchema = mongoose.schema({
-  creatorId: {type:String, required: true},
+  userId: {type:mongoose.Schema.Types.ObjectId, required: true},
   timeStamp: {type:Date, default: Date.now},
   type: {type:String, required: true},
   description: {type:String, required: true},
