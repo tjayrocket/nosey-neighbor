@@ -33,11 +33,11 @@
 1. /api/signup
   * POST: email + pw => token
 2. /api/residences
-  * POST: address => house-id
-  * GET: houseId => whole object
-  * PUT: houseId + occupants => whole object
+  * POST: address => residenceId
+  * GET: residenceId => whole object
+  * PUT: residenceId + occupants => whole object
 3. /api/incidents
-  * POST: token + type (validated) + content + houseId => whole object
+  * POST: token + type (validated) + content + residenceId => whole object
   * GET: () => array of incidents
   * GET: incidentId => whole object
 4. /api/comments
