@@ -20,7 +20,6 @@
     "no-console": "off",
     "indent": [ "error", 2 ],
     "quotes": ["error", "single", { "allowTemplateLiterals": true }],
-    "comma-dangle": ["error", "always-multiline"],
     "semi": [ "error", "always" ]
   }
 }
