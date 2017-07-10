@@ -2,8 +2,8 @@
 
 const User = require('../../model/user.js');
 const Comment = require('../../model/comment.js');
-const Incident = require('../../incident.js');
-const Profile = require('../../profile.js');
+const Incident = require('../../model/incident.js');
+const Profile = require('../../model/profile.js');
 const Residence = require('../../model/residence.js');
 
 module.exports = () => {
