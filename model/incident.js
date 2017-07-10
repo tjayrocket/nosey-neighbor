@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const incidentSchema = mongoose.schema({
+const incidentSchema = mongoose.Schema({
   userId: {type:mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
   timeStamp: {type:Date, default: Date.now()},
   type: {type:String, required: true},
@@ -38,3 +38,5 @@ incidentSchema.post('remove', function(doc, next) {
     .then(() => next)
     .catch(next);
 });
+
+module.exports = mongoose.model('incidents', incidentSchema);

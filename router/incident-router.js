@@ -7,4 +7,7 @@ const Incident = require('../model/incident.js');
 
 const incidentRouter = module.exports = new Router();
 
-authRouter.get('/api/incidents', )
+authRouter.post('/api/incidents', jsonParser (req, res, next) => {
+  Incidents.create(req.body)
+
+})
