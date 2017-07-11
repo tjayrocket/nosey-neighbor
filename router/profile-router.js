@@ -2,7 +2,8 @@
 
 const jsonParser = require('body-parser').json();
 const {Router} = require('express');
-const basicAuth = require('../lib/basic-auth-middleware.js');
+const s3Upload = require('../lib/s3-upload-middleware.js');
+const bearerAuth = require('../lib/bearer-auth-middleware.js');
 const User = require('../model/user.js');
 
 const profileRouter = module.exports = new Router();
