@@ -60,7 +60,6 @@ describe('Testing Residence Model', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
-            // .set('Authorization', `Bearer ${userData.token}`) //disabled in order to test auth
             .send({
               address: '742 Evergreen Terrace, Springfield'
             })
