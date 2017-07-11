@@ -10,7 +10,7 @@ const mockComment = require('./lib/mock-comment.js');
 
 const API_URL = process.env.API_URL;
 
-describe.only('Testing Comment Model', () => {
+describe('Testing Comment Model', () => {
   before(server.start);
   after(server.stop);
   afterEach(cleanDB);
