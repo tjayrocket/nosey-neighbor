@@ -1,7 +1,6 @@
 'use strict';
 
 require('dotenv').config({ path: `${__dirname}/../.test.env` });
-require('./lib/mock-aws.js');
 const superagent = require('superagent');
 const expect = require('expect');
 const server = require('../lib/server.js');
@@ -11,7 +10,7 @@ const mockComment = require('./lib/mock-comment.js');
 
 const API_URL = process.env.API_URL;
 
-describe('Testing Profile Model', () => {
+describe.only('Testing Comment Model', () => {
   before(server.start);
   after(server.stop);
   afterEach(cleanDB);
