@@ -12,7 +12,6 @@ mockIncident.createOne = () => {
     timeStamp: faker.date.recent(),
     type: faker.lorem.sentence(),
     description: faker.lorem.sentence(),
-    residenceId: faker.residenceId,
     comments: faker.lorem.sentence()
   });
 };
