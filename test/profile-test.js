@@ -137,7 +137,7 @@ describe('Testing Profile Model', () => {
                 .attach('image', `${__dirname}/assets/me.jpg`)
                 .then(() => {
                   return superagent.put(`${API_URL}/api/profile/${userData._id}`)
-                    .set('Authorization', `Basic ${encoded}`)
+                    .set('Authorization', `Bearer ${userData.token}`)
                     .send({
                       name: 'Paul',
                       bio: 'I am no longer Phil, I am Paul',
@@ -160,9 +160,8 @@ describe('Testing Profile Model', () => {
         .then(residence => {
           return mockUser.createOne()
             .then(userData => {
-              let encoded = new Buffer(`${userData.email}:${userData.password}`).toString('base64');
               return superagent.post(`${API_URL}/api/profile/${userData._id}`)
-                .set('Authorization', `Basic ${encoded}`)
+                .set('Authorization', `Bearer ${userData.token}`)
                 .send({
                   residenceId: residence._id,
                   name: 'Phil',
@@ -194,7 +193,7 @@ describe('Testing Profile Model', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.put(`${API_URL}/api/profile/${userData._id}`)
-            .set('Authorization', `Basic skdfhskjdfhakdjf`)
+            .set('Authorization', `Bearer skdfhskjdfhakdjf`)
             .send({
               name: 'Phil',
               phone: 1236530000,
