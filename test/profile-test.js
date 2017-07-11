@@ -170,7 +170,7 @@ describe('Testing Profile Model', () => {
                 })
                 .then(() => {
                   return superagent.put(`${API_URL}/api/profile/${userData._id}`)
-                    .set('Authorization', `Basic ${encoded}`)
+                    .set('Authorization', `Bearer ${userData.token}`)
                     .send({
                       userId: 'jflkasjdlksajdl',
                       name: 'Paul',
