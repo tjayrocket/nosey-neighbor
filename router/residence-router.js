@@ -42,15 +42,14 @@ residenceRouter.get('/api/residences', (req, res, next) => {
     .catch(next);
 });
 
-residenceRouter.put(
-  '/api/residences/:id',
-  jsonParser,
-  bearerAuth,
-  (req, res, next) => {
-    console.log('hit PUT /api/residences/:id');
+residenceRouter.put('/api/residences/:id', jsonParser, bearerAuth, (req, res, next) => {
+  console.log('hit PUT /api/residences/:id');
+  console.log('req.body: ', req.body);
+  console.log('req.body.address: ', req.body.address);
+  if(req.body.address) return res.sendStatus(400);
+  if(!Object.keys(req.body).length) return res.sendStatus(400);
 
-    Residence.findByIdAndUpdate(req.params.id, req.body)
-      .then(residence => res.status(202).json(residence))
-      .catch(next);
-  }
-);
+  Residence.findByIdAndUpdate(req.params.id, req.body)
+    .then(residence => res.status(202).json(residence))
+    .catch(next);
+});
