@@ -7,6 +7,7 @@ const expect = require('expect');
 const server = require('../lib/server.js');
 const cleanDB = require('./lib/clean-db.js');
 const mockUser = require('./lib/mock-user.js');
+const mockResidence = require('./lib/mock-residence.js');
 
 const API_URL = process.env.API_URL;
 
@@ -14,6 +15,20 @@ describe('Testing Residence Model', () => {
   before(server.start);
   after(server.stop);
   afterEach(cleanDB);
+
+  describe('Testing GET', () => {
+    it('should return 200 status code and an array of residences', () => {
+      return mockResidence.createOne()
+        .then((tempResidence) => {
+          return superagent.get(`${API_URL}/api/residences`)
+            .then(res => {
+              expect(res.status).toEqual(200);
+              expect(res.body[0].address).toEqual(tempResidence.address);
+              expect(res.body[0]._id).toEqual(tempResidence.id);
+            });
+        });
+    });
+  });
 
   describe('Testing POST', () => {
     it('should return 201 status code and a residence ID', () => {
