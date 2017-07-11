@@ -8,7 +8,7 @@ const Profile = require('../model/profile.js');
 
 const profileRouter = module.exports = new Router();
 
-profileRouter.post('/api/profile/:id', jsonParser, bearerAuth, s3Upload('image'), (req, res, next) => {
+profileRouter.post('/api/profiles/:id', bearerAuth, s3Upload('image'), (req, res, next) => {
   new Profile({
     name: req.body.name,
     residenceId: req.body.residenceId.toString(),
@@ -22,13 +22,13 @@ profileRouter.post('/api/profile/:id', jsonParser, bearerAuth, s3Upload('image')
     .catch(next);
 });
 
-profileRouter.put('/api/profile/:id', bearerAuth, (req, res, next) => {
+profileRouter.put('/api/profiles/:id', bearerAuth, (req, res, next) => {
   Profile.findOneAndUpdate({ userId: req.params.id }, req.body, { new: true })
     .then(profile => res.json(profile))
     .catch(next);
 });
 
-profileRouter.get('/api/profile/:id', (req, res, next) => {
+profileRouter.get('/api/profiles/:id', (req, res, next) => {
   Profile.findOne({ userId: req.params.id })
     .then(profile => res.json(profile))
     .catch(next);
