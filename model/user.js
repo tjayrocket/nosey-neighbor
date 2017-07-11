@@ -6,26 +6,23 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-  email: {type: String, required: true, unique: true},
-  passwordHash: {type: String, required: true},
-  tokenSeed: {type: String, required: true, unique: true},
+  email: { type: String, required: true, unique: true },
+  passwordHash: { type: String, required: true },
+  tokenSeed: { type: String, required: true, unique: true }
 });
 
 userSchema.methods.passwordHashCreate = function(password) {
-  return bcrypt.hash(password, 8)
-    .then(hash => {
-      this.passwordHash = hash;
-      return this;
-    });
+  return bcrypt.hash(password, 8).then(hash => {
+    this.passwordHash = hash;
+    return this;
+  });
 };
 
 userSchema.methods.passwordHashCompare = function(password) {
-  return bcrypt.compare(password, this.passwordHash)
-    .then(isCorrect => {
-      if(isCorrect)
-        return this;
-      throw new Error('Unauthorized, password does not match');
-    });
+  return bcrypt.compare(password, this.passwordHash).then(isCorrect => {
+    if (isCorrect) return this;
+    throw new Error('Unauthorized, password does not match');
+  });
 };
 
 userSchema.methods.tokenSeedCreate = function() {
@@ -34,29 +31,29 @@ userSchema.methods.tokenSeedCreate = function() {
 
     let _tokenSeedCreate = () => {
       this.tokenSeed = crypto.randomBytes.toString('hex');
-      this.save()
-        .then(() => resolve(this))
-        .catch(() => {
-          if(tries < 1)
-            return reject(new Error('Server failed to create tokenSeed'));
-          tries--;
-          _tokenSeedCreate();
-        });
+      this.save().then(() => resolve(this)).catch(() => {
+        if (tries < 1)
+          return reject(new Error('Server failed to create tokenSeed'));
+        tries--;
+        _tokenSeedCreate();
+      });
     };
     _tokenSeedCreate();
   });
 };
 
 userSchema.methods.tokenCreate = function() {
-  return this.tokenSeedCreate()
-    .then(() => jwt.sign({tokenSeed: this.tokenSeed}, process.env.APP_SECRET));
+  return this.tokenSeedCreate().then(() =>
+    jwt.sign({ tokenSeed: this.tokenSeed }, process.env.APP_SECRET)
+  );
 };
 
-const User = module.exports = mongoose.model('user', userSchema);
+const User = (module.exports = mongoose.model('user', userSchema));
 
 User.create = data => {
   let password = data.password;
   delete data.password;
-  return new User(data).passwordHashCreate(password)
+  return new User(data)
+    .passwordHashCreate(password)
     .then(user => user.tokenCreate());
 };
