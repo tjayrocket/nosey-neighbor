@@ -1,9 +1,9 @@
 'use strict';
 
 require('dotenv').config({path: `${__dirname}/../.test.env`});
+require('./lib/mock-aws.js');
 const superagent = require('superagent');
 const expect = require('expect');
-
 const server = require('../lib/server.js');
 const cleanDB = require('./lib/clean-db.js');
 const mockUser = require('./lib/mock-user.js');
@@ -20,29 +20,27 @@ describe('Testing Profile Model', () => {
     it('should return 200', () => {
       return mockUser.createOne()
         .then(userData => {
-          let encoded = new Buffer(`${userData.email}:${userData.password}`).toString('base64');
           return superagent.post(`${API_URL}/api/profile/${userData._id}`)
-            .set('Authorization', `Basic ${encoded}`)
-            .send({
-              name: 'Phil',
-              phone: 9998881234,
-              bio: 'I am Phil',
-            })
+            .set('Authorization', `Bearer ${userData.token}`)
+            .field('name', 'Phil')
+            .field('phone', 9998881234)
+            .field('bio', 'I am Phil')
+            .attach('image', `${__dirname}/assets/me.jpg`)
             .then(res => {
               expect(res.status).toEqual(200);
               expect(res._id).toEqual(userData._id);
-              expect(res.name).toEqual('Phil');
-              expect(res.phone).toEqual(9998881234);
-              expect(res.bio).toEqual('I am Phil');
+              expect(res.body.name).toEqual('Phil');
+              expect(res.body.phone).toEqual(9998881234);
+              expect(res.body.bio).toEqual('I am Phil');
+              expect(res.body.imageURI).toExist();
             });
         });
     });
     it('should return 400 bad request', () => {
       return mockUser.createOne()
         .then(userData => {
-          let encoded = new Buffer(`${userData.email}:${userData.password}`).toString('base64');
           return superagent.post(`${API_URL}/api/profile/${userData._id}`)
-            .set('Authorization', `Basic ${encoded}`)
+            .set('Authorization', `Bearer ${userData.token}`)
             .send({
               nope: 'non existent',
             })
@@ -58,7 +56,7 @@ describe('Testing Profile Model', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/profile/${userData._id}`)
-            .set('Authorization', `Basic skdfhskjdfhakdjf`)
+            .set('Authorization', `Bearer skdfhskjdfhakdjf`)
             .send({
               name: 'Phil',
               phone: 9998881234,

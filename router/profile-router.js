@@ -14,3 +14,15 @@ profileRouter.post('/api/profile/:id', jsonParser, basicAuth, (req, res, next) =
 profileRouter.get('/api/profile/:id', (req, res, next) => {
 
 });
+
+petRouter.post('/api/pets', bearerAuth, s3Upload('image'), (req, res, next) => {
+  new Pet({
+    name: req.body.name,
+    type: req.body.type,
+    photoURI: req.s3Data.Location,
+    userID: req.user._id.toString(),
+  })
+  .save()
+  .then(pet => res.json(pet))
+  .catch(next);
+});
