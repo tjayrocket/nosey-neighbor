@@ -1,6 +1,5 @@
 'use strict';
 
-const jsonParser = require('body-parser').json();
 const {Router} = require('express');
 const s3Upload = require('../lib/s3-upload-middleware.js');
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
@@ -8,14 +7,14 @@ const Profile = require('../model/profile.js');
 
 const profileRouter = module.exports = new Router();
 
-profileRouter.post('/api/profiles/:id', bearerAuth, s3Upload('image'), (req, res, next) => {
+profileRouter.post('/api/profiles', bearerAuth, s3Upload('image'), (req, res, next) => {
   new Profile({
     name: req.body.name,
-    residenceId: req.body.residenceId.toString(),
+    residenceId: req.body.residenceId,
     phone: req.body.phone,
     bio: req.body.bio,
     photoURI: req.s3Data.Location,
-    userId: req.params.id,
+    userId: req.user._id,
   })
     .save()
     .then(profile => res.json(profile))
@@ -23,13 +22,13 @@ profileRouter.post('/api/profiles/:id', bearerAuth, s3Upload('image'), (req, res
 });
 
 profileRouter.put('/api/profiles/:id', bearerAuth, (req, res, next) => {
-  Profile.findOneAndUpdate({ userId: req.params.id }, req.body, { new: true })
+  Profile.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
     .then(profile => res.json(profile))
     .catch(next);
 });
 
 profileRouter.get('/api/profiles/:id', (req, res, next) => {
-  Profile.findOne({ userId: req.params.id })
+  Profile.findOne({ _id: req.user._id })
     .then(profile => res.json(profile))
     .catch(next);
 });

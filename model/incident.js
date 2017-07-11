@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Residence = require('./residence.js');
 
 const incidentSchema = mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'neighbor', required: true },
   timeStamp: { type: Date, default: Date.now() },
   type: { type: String, required: true },
   description: { type: String, required: true },
@@ -52,4 +52,4 @@ incidentSchema.post('remove', function(doc, next) {
     .catch(next);
 });
 
-module.exports = mongoose.model('incidents', incidentSchema);
+module.exports = mongoose.model('incident', incidentSchema);

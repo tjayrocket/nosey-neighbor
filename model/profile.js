@@ -3,12 +3,12 @@
 const mongoose = require('mongoose');
 
 const profileSchema = mongoose.Schema({
-  userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', unique: true},
-  name: {type: String, required: true, minlength: 1},
-  photoURI: {type: String, minlength: 1},
-  residenceId: {type: mongoose.Schema.Types.ObjectId, ref: 'residence'},
-  phone: {type: String, minlength: 1},
-  bio: {type: String, minlength: 1},
+  userId: {type: mongoose.Schema.Types.ObjectId, ref: 'neighbor', unique: true, required: true},
+  name: {type: String, minlength: 1, required: true},
+  photoURI: {type: String, minlength: 1, default: 'n/a'},
+  residenceId: {type: mongoose.Schema.Types.ObjectId, ref: 'residence', required: true},
+  phone: {type: String, minlength: 1, required: true},
+  bio: {type: String, minlength: 1, required: true},
 });
 
 module.exports = mongoose.model('profile', profileSchema);
