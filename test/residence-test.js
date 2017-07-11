@@ -60,18 +60,13 @@ describe('Testing Residence Model', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
-            .set('Authorization', `Bearer ${userData.token}`)
+            // .set('Authorization', `Bearer ${userData.token}`) //disabled in order to test auth
             .send({
               address: '742 Evergreen Terrace, Springfield'
             })
-            .then(() => {
-              return superagent.post(`${API_URL}/api/residences`)
-                .send({
-                  address: '742 Evergreen Terrace, Springfield'
-                })
-                .catch(res => {
-                  expect(res.status).toEqual(401);
-                });
+            .catch(res => {
+              expect(res.status).toEqual(401);
+              console.log(userData.token);
             });
         });
     });
@@ -96,7 +91,7 @@ describe('Testing Residence Model', () => {
         });
     });
   });
-  describe.only('Testing PUT', () => {
+  describe('Testing PUT', () => {
     it('should return 202 status code and GET request should return proper modifications.', () => {
       return mockUser.createOne()
         .then(userData => {
@@ -117,9 +112,71 @@ describe('Testing Residence Model', () => {
                   expect(res.status).toEqual(202);
                   return superagent.get(`${API_URL}/api/residences/${res.body._id}`)
                     .then((res) => {
-                      console.log('res.body: ', res.body);
                       expect(res.body.occupants).toEqual(newOccupants);
                     });
+                });
+            });
+        });
+    });
+    it('should return 401 status code.', () => {
+      return mockUser.createOne()
+        .then(userData => {
+          return superagent.post(`${API_URL}/api/residences`)
+            .set('Authorization', `Bearer ${userData.token}`)
+            .send({
+              address: '742 Evergreen Terrace, Springfield',
+              occupants: ['homer', 'marge']
+            })
+            .then((res) => {
+              let newOccupants = ['homer', 'marge', 'bart', 'lisa', 'maggie'];
+              return superagent.put(`${API_URL}/api/residences/${res.body}`)
+                // .set('Authorization', `Bearer ${userData.token}`) //disabled in order to test auth
+                .send({
+                  occupants: newOccupants
+                })
+                .catch(res => {
+                  expect(res.status).toEqual(401);
+                });
+            });
+        });
+    });
+    it('should return 400 status code when address is attempted to be modified.', () => {
+      return mockUser.createOne()
+        .then(userData => {
+          return superagent.post(`${API_URL}/api/residences`)
+            .set('Authorization', `Bearer ${userData.token}`)
+            .send({
+              address: '742 Evergreen Terrace, Springfield',
+              occupants: ['homer', 'marge']
+            })
+            .then((res) => {
+              let newOccupants = ['homer', 'marge', 'bart', 'lisa', 'maggie'];
+              return superagent.put(`${API_URL}/api/residences/${res.body}`)
+                .set('Authorization', `Bearer ${userData.token}`)
+                .send({
+                  address: '742 Evergreen Terrace, Springfield, Anystate, USA',
+                  occupants: newOccupants
+                })
+                .catch(res => {
+                  expect(res.status).toEqual(400);
+                });
+            });
+        });
+    });
+    it('should return 400 status code when no body is sent.', () => {
+      return mockUser.createOne()
+        .then(userData => {
+          return superagent.post(`${API_URL}/api/residences`)
+            .set('Authorization', `Bearer ${userData.token}`)
+            .send({
+              address: '742 Evergreen Terrace, Springfield',
+              occupants: ['homer', 'marge']
+            })
+            .then((res) => {
+              return superagent.put(`${API_URL}/api/residences/${res.body}`)
+                .set('Authorization', `Bearer ${userData.token}`)
+                .catch(res => {
+                  expect(res.status).toEqual(400);
                 });
             });
         });
