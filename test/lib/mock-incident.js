@@ -9,10 +9,10 @@ mockIncident.createOne = () => {
   let result = {};
   return new Incident({
     userId: faker.userId,
-    timeStamp: Date.now(),
-    type: 'Fake Type',
-    description: 'Fake  Description',
+    timeStamp: faker.date.recent(),
+    type: faker.lorem.sentence(),
+    description: faker.lorem.sentence(),
     residenceId: faker.residenceId,
-    comments: 'Blergh'
+    comments: faker.lorem.sentence()
   });
 };

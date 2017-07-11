@@ -22,12 +22,6 @@ describe('Testing Incident Model (TJay) :', () => {
       return superagent.get(`${API_URL}/api/incidents/${tempIncident._id}`)
         .then(res => {
           expect(res.status).toEqual(200);
-          // expect(res.body._id).toEqual(tempIncident._id);
-          // expect(new Date(res.body.timeStamp).toEqual(tempIncident.timeStamp));
-          // expect(res.body.type).toEqual('Incident');
-          // expect(res.body.description).toEqual('Description of Incident');
-          // expect(res.body.residenceId).toEqual(8675309);
-          // expect(res.body.comments).toExist();
         })
     });
 
