@@ -4,7 +4,6 @@ require('dotenv').config({path: `${__dirname}/../.test.env`});
 const superagent = require('superagent');
 const expect = require('expect');
 
-const incidentRouter = require('../router/incident-router.js')
 const server = require('../lib/server.js');
 const cleanDB = require('./lib/clean-db.js');
 const mockIncident = require('./lib/mock-incident.js');
@@ -20,27 +19,16 @@ describe('Testing Incident Model (TJay) :', () => {
 
   describe('Testing POST', () => {
     it('should return 200 - blah blah', () => {
-      return mockIncident.createone()
-        .then(userData => {
-          return superagent.post(`${API_URL}/api/incidents`)
-            .send({
-              id: userData._id,
-              timeStamp: Date.now(),
-              type: 'HOA-Explosion',
-              description: 'Bob Blew up.',
-              residenceId: userData.residenceId,
-              comments: 'Blah'
-            })
-            .then(res => {
-              expect(res.status).toEqual(200);
-              expect(res.id).toEqual(userData._id);
-              expect(res.timeStamp).toEqual(Date.now());
-              expect(res.type).toEqual('HOA-Explosion');
-              expect(res.description).toEqual('Bob Blew up.');
-              expect(res.residenceId).toEqual(userData.residenceId);
-              expect(res.comments).toEqual('Blah');
-            });
-        });
+      return superagent.get(`${API_URL}/api/incidents/${tempIncident._id}`)
+        .then(res => {
+          expect(res.status).toEqual(200);
+          // expect(res.body._id).toEqual(tempIncident._id);
+          // expect(new Date(res.body.timeStamp).toEqual(tempIncident.timeStamp));
+          // expect(res.body.type).toEqual('Incident');
+          // expect(res.body.description).toEqual('Description of Incident');
+          // expect(res.body.residenceId).toEqual(8675309);
+          // expect(res.body.comments).toExist();
+        })
     });
 
     it('should return 400 bad request', () => {
@@ -79,7 +67,7 @@ describe('Testing Incident Model (TJay) :', () => {
     });
 
     it('Should return 404', () => {
-
+      expect(res.status).toEqual(404);
     });
   });
 
