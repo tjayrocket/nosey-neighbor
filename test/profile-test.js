@@ -91,21 +91,21 @@ describe('Testing Profile Model', () => {
           return mockUser.createOne()
             .then(userData => {
               return superagent.post(`${API_URL}/api/profile/${userData._id}`)
-                .send({
-                  residenceId: residence._id,
-                  name: 'Phil',
-                  phone: 1236530000,
-                  bio: 'I am Phil',
-                })
+                .set('Authorization', `Bearer ${userData.token}`)
+                .field('name', 'Phil')
+                .field('phone', 9998881234)
+                .field('bio', 'I am Phil')
+                .attach('image', `${__dirname}/assets/me.jpg`)
                 .then(() => {
                   return superagent.get(`${API_URL}/api/profile/${userData._id}`)
                     .then(res => {
                       expect(res.status).toEqual(200);
-                      expect(res.userId).toEqual(userData._id);
-                      expect(res.name).toEqual('Phil');
-                      expect(res.phone).toEqual(1236530000);
-                      expect(res.bio).toEqual('I am Phil');
-                      expect(res.residenceId).toEqual(residence._id);
+                      expect(res.body.userId).toEqual(userData._id);
+                      expect(res.body.name).toEqual('Phil');
+                      expect(res.body.phone).toEqual(1236530000);
+                      expect(res.body.bio).toEqual('I am Phil');
+                      expect(res.body.residenceId).toEqual(residence._id);
+                      expect(res.body.imageURI).toExist();
                     });
                 });
             });
@@ -128,15 +128,13 @@ describe('Testing Profile Model', () => {
         .then(residence => {
           return mockUser.createOne()
             .then(userData => {
-              let encoded = new Buffer(`${userData.email}:${userData.password}`).toString('base64');
               return superagent.post(`${API_URL}/api/profile/${userData._id}`)
-                .set('Authorization', `Basic ${encoded}`)
-                .send({
-                  residenceId: residence._id,
-                  name: 'Phil',
-                  phone: 1236530000,
-                  bio: 'I am Phil',
-                })
+                .set('Authorization', `Bearer ${userData.token}`)
+                .field('name', 'Phil')
+                .field('phone', 9998881234)
+                .field('bio', 'I am Phil')
+                .field('residenceId', residence._id)
+                .attach('image', `${__dirname}/assets/me.jpg`)
                 .then(() => {
                   return superagent.put(`${API_URL}/api/profile/${userData._id}`)
                     .set('Authorization', `Basic ${encoded}`)
@@ -145,12 +143,13 @@ describe('Testing Profile Model', () => {
                       bio: 'I am no longer Phil, I am Paul',
                     })
                     .then(res => {
-                      expect(res.status).toEqual(200);
-                      expect(res.userId).toEqual(userData._id);
-                      expect(res.name).toEqual('Paul');
-                      expect(res.phone).toEqual(1236530000);
-                      expect(res.bio).toEqual('I am no longer Phil, I am Paul');
-                      expect(res.residenceId).toEqual(residence._id);
+                      expect(res.body.status).toEqual(200);
+                      expect(res.body.userId).toEqual(userData._id);
+                      expect(res.body.name).toEqual('Paul');
+                      expect(res.body.phone).toEqual(1236530000);
+                      expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
+                      expect(res.body.residenceId).toEqual(residence._id);
+                      expect(res.body.imageURI).toExist();
                     });
                 });
             });
@@ -180,11 +179,12 @@ describe('Testing Profile Model', () => {
                     })
                     .then(res => {
                       expect(res.status).toEqual(400);
-                      expect(res.userId).toEqual(userData._id);
-                      expect(res.name).toEqual('Paul');
-                      expect(res.phone).toEqual(1236530000);
-                      expect(res.bio).toEqual('I am no longer Phil, I am Paul');
-                      expect(res.residenceId).toEqual(residence._id);
+                      expect(res.body.userId).toEqual(userData._id);
+                      expect(res.body.name).toEqual('Paul');
+                      expect(res.body.phone).toEqual(1236530000);
+                      expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
+                      expect(res.body.residenceId).toEqual(residence._id);
+                      expect(res.body.imageURI).toExist();
                     });
                 });
             });
