@@ -20,7 +20,9 @@ describe('Testing Profile Model', () => {
     it('should return 200', () => {
       return mockUser.createOne()
         .then(userData => {
+          let encoded = new Buffer(`${userData.email}:${userData.password}`).toString('base64');
           return superagent.post(`${API_URL}/api/profile/${userData._id}`)
+            .set('Authorization', `Basic ${encoded}`)
             .send({
               name: 'Phil',
               phone: 1236530000,
@@ -38,7 +40,9 @@ describe('Testing Profile Model', () => {
     it('should return 400 bad request', () => {
       return mockUser.createOne()
         .then(userData => {
+          let encoded = new Buffer(`${userData.email}:${userData.password}`).toString('base64');
           return superagent.post(`${API_URL}/api/profile/${userData._id}`)
+            .set('Authorization', `Basic ${encoded}`)
             .send({
               nope: 'non existent',
             })
@@ -48,6 +52,34 @@ describe('Testing Profile Model', () => {
             .catch(res => {
               expect(res.status).toEqual(400);
             });
+        });
+    });
+    it('should return 401 unauthorized', () => {
+      return mockUser.createOne()
+        .then(userData => {
+          return superagent.post(`${API_URL}/api/profile/${userData._id}`)
+            .set('Authorization', `Basic skdfhskjdfhakdjf`)
+            .send({
+              nope: 'non existent',
+            })
+            .then(res => {
+              throw res;
+            })
+            .catch(res => {
+              expect(res.status).toEqual(401);
+            });
+        });
+    });
+    it('Should return with 404 not found', () => {
+      return superagent.post(`${API_URL}/api/profile/asdasdasdasd`)
+        .send({
+          nope: 'non existent',
+        })
+        .then(res => {
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(404);
         });
     });
   });
