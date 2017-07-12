@@ -13,7 +13,7 @@ const incidentSchema = mongoose.Schema({
     ref: 'residence',
     required: true
   },
-  comments: [{ type: String }]
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'comments', }]
 });
 
 incidentSchema.pre('save', function(next) {
