@@ -1,7 +1,7 @@
 # Created by https://www.gitignore.io/api/osx,node
 
-# Ignore package.lock.json
-package.lock.json
+# Ignore package-lock.json
+package-lock.json
 
 # Temp S3 Assets
 temp-assets
