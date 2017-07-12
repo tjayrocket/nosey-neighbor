@@ -3,7 +3,7 @@
 const faker = require('faker');
 const Incident = require('../../model/incident.js');
 const mockUser = require('./mock-user.js');
-const mockResidence = require('./mock-residence.js')
+const mockResidence = require('./mock-residence.js');
 
 const mockIncident = module.exports = {};
 
