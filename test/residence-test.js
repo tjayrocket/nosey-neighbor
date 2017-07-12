@@ -65,7 +65,6 @@ describe('Testing Residence Model', () => {
             })
             .catch(res => {
               expect(res.status).toEqual(401);
-              console.log(userData.token);
             });
         });
     });
