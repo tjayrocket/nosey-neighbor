@@ -232,4 +232,73 @@ describe.only('Testing Comment Model', () => {
     });
 
   });
+
+  describe('Testing DELETE', () => {
+    it('should return 204', () => {
+      return mockIncident
+        .createOne()
+        .then(incidentData => {
+          return superagent
+            .post(`${API_URL}/api/comments/`)
+            .set('Authorization', `Bearer ${incidentData.userToken}`)
+            .send({
+              userId: incidentData.userId,
+              incidentId: incidentData.id,
+              content: 'Neighbors are outside again, theres at least 20 cars at their house'
+            })
+            .then(res => {
+              console.log('delete res.body', res.body)
+              return superagent.delete(`${API_URL}/api/comments/${res.body._id}`)
+                .set('Authorization', `Bearer ${incidentData.userToken}`)
+                .then(res => {
+                  expect(res.status).toEqual(204);
+                });
+            });
+        });
+    });
+    it('should return 404 not found', () => {
+      return mockIncident
+        .createOne()
+        .then(incidentData => {
+          return superagent
+            .post(`${API_URL}/api/comments/`)
+            .set('Authorization', `Bearer ${incidentData.userToken}`)
+            .send({
+              userId: incidentData.userId,
+              incidentId: incidentData.id,
+              content: 'Neighbors are outside again, theres at least 20 cars at their house'
+            })
+            .then(() => {
+              return superagent
+                .delete(`${API_URL}/api/comments/jhfkalsjdhfaksldhf`)
+                .set('Authorization', `Bearer ${incidentData.userToken}`)
+                .catch(res => {
+                  expect(res.status).toEqual(404);
+                });
+            });
+        });
+    });
+    it('should return 401', () => {
+      return mockIncident
+        .createOne()
+        .then(incidentData => {
+          return superagent
+            .post(`${API_URL}/api/comments/`)
+            .set('Authorization', `Bearer ${incidentData.userToken}`)
+            .send({
+              userId: incidentData.userId,
+              incidentId: incidentData.id,
+              content: 'Neighbors are outside again, theres at least 20 cars at their house'
+            })
+            .then(res => {
+              return superagent
+                .delete(`${API_URL}/api/comments/${res.body._id}`)
+                .catch(err => {
+                  expect(err.status).toEqual(401);
+                });
+            });
+        });
+    });
+
+  });
 });
