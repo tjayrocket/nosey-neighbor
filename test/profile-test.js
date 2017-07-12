@@ -23,7 +23,6 @@ describe('Testing Profile Model', () => {
           return mockUser.createOne()
             .then(userData => {
               tempUser = userData;
-              console.log(userData);
               return superagent.post(`${API_URL}/api/profiles`)
                 .set('Authorization', `Bearer ${userData.token}`)
                 .field('name', 'Phil')
@@ -81,26 +80,28 @@ describe('Testing Profile Model', () => {
   });
 
   describe('Testing GET', () => {
+    let tempUser;
     it('should return 200', () => {
       return mockResidence.createOne()
         .then(residence => {
           return mockUser.createOne()
             .then(userData => {
+              tempUser = userData;
               return superagent.post(`${API_URL}/api/profiles`)
                 .set('Authorization', `Bearer ${userData.token}`)
                 .field('name', 'Phil')
                 .field('phone', '9998881234')
                 .field('residenceId', residence.id.toString())
                 .field('bio', 'I am Phil')
-                .attach('image', `${__dirname}/assets/me.jpg`)
-                .then(profile => {
-                  return superagent.get(`${API_URL}/api/profiles/${profile._id}`);
-                })
+                .attach('image', `${__dirname}/assets/me.jpg`);
+            })
+            .then(profile => {
+              return superagent.get(`${API_URL}/api/profiles/${profile.body._id}`)
                 .then(res => {
                   expect(res.status).toEqual(200);
-                  expect(res.body.userId).toEqual(userData.user._id);
+                  expect(res.body.userId).toEqual(tempUser.user._id);
                   expect(res.body.name).toEqual('Phil');
-                  expect(res.body.phone).toEqual('1236530000');
+                  expect(res.body.phone).toEqual('9998881234');
                   expect(res.body.bio).toEqual('I am Phil');
                   expect(res.body.residenceId).toEqual(residence.id.toString());
                   expect(res.body.photoURI).toExist();
@@ -133,7 +134,7 @@ describe('Testing Profile Model', () => {
                 .field('residenceId', residence.id.toString())
                 .attach('image', `${__dirname}/assets/me.jpg`)
                 .then(profile => {
-                  return superagent.put(`${API_URL}/api/profiles/${profile._id}`)
+                  return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
                     .set('Authorization', `Bearer ${userData.token}`)
                     .field('name', 'Phil')
                     .field('bio', 'I am no longer Phil, I am Paul');
@@ -164,7 +165,7 @@ describe('Testing Profile Model', () => {
                   bio: 'I am Phil',
                 })
                 .then(profile => {
-                  return superagent.put(`${API_URL}/api/profiles/${profile._id}`)
+                  return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
                     .set('Authorization', `Bearer ${userData.token}`)
                     .send({
                       userId: 'jflkasjdlksajdl',
@@ -195,8 +196,7 @@ describe('Testing Profile Model', () => {
           bio: 'I am Phil',
         })
         .then(profile => {
-          return superagent.put(`${API_URL}/api/profiles/${profile._id}`)
-            .set('Authorization', `Bearer skdfhskjdfhakdjf`)
+          return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
             .send({
               name: 'Phil',
               phone: '1236530000',
@@ -214,6 +214,7 @@ describe('Testing Profile Model', () => {
     });
     it('Should return with 404 not found', () => {
       return superagent.put(`${API_URL}/api/profiles/asdasdasdasd`)
+        .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCd9.eyJ0b2tlblNlZWQiOiJmdW5jdGlvbiByYW5kb21CeXRlcygpIHsgW25hdGl2ZSBjb2RlXSB9IiwiaWF0IjoxNDk5ODE5NzIyfQ.ZtmEWkIwMJoFvt0DOF9_p1zWeHEUlXZnCs8EKyIIId4`)
         .send({
           nope: 'non existent',
         })
