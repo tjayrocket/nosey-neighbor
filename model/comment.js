@@ -11,7 +11,7 @@ const commentSchema = mongoose.Schema({
 });
 
 commentSchema.pre('save', function(next) {
-  Incident.findById(this.incident)
+  Incident.findById(this.incidentId)
     .then(() => next())
     .catch(() =>
       next(
@@ -23,7 +23,7 @@ commentSchema.pre('save', function(next) {
 });
 
 commentSchema.post('save', function(doc, next) {
-  Incident.findById(doc.incident)
+  Incident.findById(doc.incidentId)
     .then(incident => {
       let commentIDSet = new Set(incident.comments);
       commentIDSet.add(this._id.toString());
@@ -35,7 +35,7 @@ commentSchema.post('save', function(doc, next) {
 });
 
 commentSchema.post('remove', function(doc, next) {
-  Incident.findById(doc.incident)
+  Incident.findById(doc.incidentId)
     .then(incident => {
       incident.comments = incident.comments.filter(
         comment => comment._id !== doc._id
