@@ -14,15 +14,3 @@ authRouter.post('/api/signup', jsonParser, (req, res, next) => {
 authRouter.get('/api/signin', basicAuth, (req, res, next) => {
   req.user.tokenCreate().then(token => res.send(token)).catch(next);
 });
-
-//DELETE THIS IN PRODUCTION VERSION
-
-authRouter.get('/api/users', (req, res, next) => {
-  User.find({})
-    .then((users) => {
-      res.json(users);
-    })
-    .catch(next);
-});
-
-//DELETE THIS IN PRODUCTION VERSION

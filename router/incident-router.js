@@ -25,24 +25,3 @@ incidentRouter.get('/api/incidents', (req, res, next) => {
     .then(incidents => res.status(200).json(incidents))
     .catch(next);
 });
-
-
-// DELETE FOR PRODUCTION
-incidentRouter.put('/api/incidents/:id', jsonParser, (req, res, next) => {
-  console.log('POST /api/incidents/:id');
-  let options = {
-    runValidators: true,
-    new: true,
-  };
-  Incident.findByIdAndUpdate(req.params.id, req.body, options)
-    .then(incident => res.json(incident))
-    .catch(next);
-});
-
-incidentRouter.delete('/api/incidents/:id', (req, res, next) => {
-  console.log('DELETE /api/incidents/:id');
-  Incident.findByIdAndRemove(req.params.id)
-    .then(() => res.sendStatus(204))
-    .catch(next);
-});
-// DELETE FOR PRODUCTION

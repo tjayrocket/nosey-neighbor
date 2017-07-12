@@ -40,16 +40,4 @@ incidentSchema.post('save', function(doc, next) {
     .catch(next);
 });
 
-incidentSchema.post('remove', function(doc, next) {
-  Residence.findById(doc.residence)
-    .then(residence => {
-      residence.incidents = residence.incidents.filter(
-        incident => incident._id !== doc._id
-      );
-      return residence.save();
-    })
-    .then(() => next)
-    .catch(next);
-});
-
 module.exports = mongoose.model('incident', incidentSchema);
