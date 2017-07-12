@@ -23,7 +23,11 @@ profileRouter.post('/api/profiles', bearerAuth, s3Upload('image'), (req, res, ne
 });
 
 profileRouter.put('/api/profiles/:id', bearerAuth, jsonParser, (req, res, next) => {
-  Profile.updateOne({ _id: req.params.id }, req.body, { new: true })
+  let options = {
+    new: true,
+    runValidators: true,
+  };
+  Profile.findByIdAndUpdate(req.params.id, req.body, options)
     .then(profile => res.json(profile))
     .catch(next);
 });

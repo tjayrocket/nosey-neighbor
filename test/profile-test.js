@@ -10,7 +10,7 @@ const mockResidence = require('./lib/mock-residence.js');
 
 const API_URL = process.env.API_URL;
 
-describe('Testing Profile Model', () => {
+describe.only('Testing Profile Model', () => {
   before(server.start);
   after(server.stop);
   afterEach(cleanDB);
@@ -25,7 +25,6 @@ describe('Testing Profile Model', () => {
               tempUser = userData;
               return superagent.post(`${API_URL}/api/profiles`)
                 .set('Authorization', `Bearer ${userData.token}`)
-                .field('userId', userData.user.id)
                 .field('name', 'Phil')
                 .field('residenceId', residence.id.toString())
                 .field('phone', '9998881234')
@@ -37,6 +36,7 @@ describe('Testing Profile Model', () => {
               expect(res.body.userId).toEqual(tempUser.user._id.toString());
               expect(res.body.name).toEqual('Phil');
               expect(res.body.phone).toEqual('9998881234');
+              expect(res.body.residenceId).toEqual(residence.id.toString());
               expect(res.body.bio).toEqual('I am Phil');
               expect(res.body.photoURI).toExist();
             });
@@ -100,7 +100,7 @@ describe('Testing Profile Model', () => {
               return superagent.get(`${API_URL}/api/profiles/${profile.body._id}`)
                 .then(res => {
                   expect(res.status).toEqual(200);
-                  expect(res.body.userId).toEqual(tempUser.user._id);
+                  expect(res.body.userId).toEqual(tempUser.user._id.toString());
                   expect(res.body.name).toEqual('Phil');
                   expect(res.body.phone).toEqual('9998881234');
                   expect(res.body.bio).toEqual('I am Phil');
@@ -123,6 +123,99 @@ describe('Testing Profile Model', () => {
 
   describe('Testing PUT', () => {
     it('should return 200', () => {
+      let tempUser, tempProfile;
+      return mockResidence.createOne()
+        .then(residence => {
+          return mockUser.createOne()
+            .then(userData => {
+              tempUser = userData;
+              return superagent.post(`${API_URL}/api/profiles`)
+                .set('Authorization', `Bearer ${userData.token}`)
+                .field('name', 'Phil')
+                .field('phone', '9998881234')
+                .field('bio', 'I am Phil')
+                .field('residenceId', residence.id.toString())
+                .attach('image', `${__dirname}/assets/me.jpg`);
+            })
+            .then(profile => {
+              tempProfile = profile;
+              return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
+                .set('Authorization', `Bearer ${tempUser.token}`)
+                .send({
+                  name: 'Paul',
+                  bio: 'I am no longer Phil, I am Paul'
+                });
+            })
+            .then(res => {
+              expect(res.status).toEqual(200);
+              return superagent.get(`${API_URL}/api/profiles/${tempProfile.body._id}`)
+                .then(res => {
+                  expect(res.body.userId).toEqual(tempUser.user._id.toString());
+                  expect(res.body.name).toEqual('Paul');
+                  expect(res.body.phone).toEqual('9998881234');
+                  expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
+                  expect(res.body.residenceId).toEqual(residence.id.toString());
+                  expect(res.body.photoURI).toExist();
+                });
+            });
+        });
+    });
+    it('should return 400 bad request', () => {
+      let tempUser;
+      return mockResidence.createOne()
+        .then(residence => {
+          return mockUser.createOne()
+            .then(userData => {
+              tempUser = userData;
+              return superagent.post(`${API_URL}/api/profiles`)
+                .set('Authorization', `Bearer ${userData.token}`)
+                .field('name', 'Phil')
+                .field('phone', '9998881234')
+                .field('bio', 'I am Phil')
+                .field('residenceId', residence.id.toString())
+                .attach('image', `${__dirname}/assets/me.jpg`);
+            })
+            .then(profile => {
+              return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
+                .set('Authorization', `Bearer ${tempUser.token}`)
+                .send({
+                  userId: 123,
+                  name: 321,
+                  bio: {none: 'none'},
+                });
+            })
+            .then(res => {
+              throw res;
+            })
+            .catch(res => {
+              expect(res.status).toEqual(400);
+            });
+        });
+    });
+    it('should return 401 unauthorized', () => {
+      return mockResidence.createOne()
+        .then(residence => {
+          return superagent.post(`${API_URL}/api/profiles`)
+            .field('name', 'Phil')
+            .field('phone', '9998881234')
+            .field('bio', 'I am Phil')
+            .field('residenceId', residence.id.toString())
+            .attach('image', `${__dirname}/assets/me.jpg`);
+        })
+        .then(profile => {
+          return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
+            .field('name', 'Mike')
+            .field('phone', '1234881234')
+            .field('bio', 'I am mike');
+        })
+        .then(res => {
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(401);
+        });
+    });
+    it('Should return with 404 not found', () => {
       return mockResidence.createOne()
         .then(residence => {
           return mockUser.createOne()
@@ -134,39 +227,8 @@ describe('Testing Profile Model', () => {
                 .field('bio', 'I am Phil')
                 .field('residenceId', residence.id.toString())
                 .attach('image', `${__dirname}/assets/me.jpg`)
-                .then(profile => {
-                  return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
-                    .set('Authorization', `Bearer ${userData.token}`)
-                    .field('name', 'Paul')
-                    .field('bio', 'I am no longer Phil, I am Paul');
-                })
-                .then(res => {
-                  expect(res.status).toEqual(200);
-                  expect(res.body.userId).toEqual(userData.user._id);
-                  expect(res.body.name).toEqual('Paul');
-                  expect(res.body.phone).toEqual('9998881234');
-                  expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
-                  expect(res.body.residenceId).toEqual(residence.id.toString());
-                  expect(res.body.photoURI).toExist();
-                });
-            });
-        });
-    });
-    it('should return 400 bad request', () => {
-      return mockResidence.createOne()
-        .then(residence => {
-          return mockUser.createOne()
-            .then(userData => {
-              return superagent.post(`${API_URL}/api/profiles`)
-                .set('Authorization', `Bearer ${userData.token}`)
-                .send({
-                  residenceId: residence.id.toString(),
-                  name: 'Phil',
-                  phone: '1236530000',
-                  bio: 'I am Phil',
-                })
-                .then(profile => {
-                  return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
+                .then(() => {
+                  return superagent.put(`${API_URL}/api/profiles/sdasdasdasdasdasdasdasdasdasd`)
                     .set('Authorization', `Bearer ${userData.token}`)
                     .send({
                       userId: 'jflkasjdlksajdl',
@@ -178,52 +240,9 @@ describe('Testing Profile Model', () => {
                   throw res;
                 })
                 .catch(res => {
-                  expect(res.status).toEqual(400);
+                  expect(res.status).toEqual(404);
                 });
             });
-        });
-    });
-    it('should return 401 unauthorized', () => {
-      return mockResidence.createOne()
-        .then(residence => {
-          return mockUser.createOne()
-            .then(userData => {
-              return superagent.post(`${API_URL}/api/profiles`)
-                .set('Authorization', `Bearer ${userData.token}`)
-                .send({
-                  residenceId: residence.id.toString(),
-                  name: 'Phil',
-                  phone: '1236530000',
-                  bio: 'I am Phil',
-                })
-                .then(profile => {
-                  return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
-                    .send({
-                      name: 'Phil',
-                      phone: '1236530000',
-                      bio: 'I am Phil',
-                    })
-                    .then(res => {
-                      throw res;
-                    })
-                    .catch(res => {
-                      expect(res.status).toEqual(401);
-                    });
-                });
-            });
-        });
-    });
-    it('Should return with 404 not found', () => {
-      return superagent.put(`${API_URL}/api/profiles/asdasdasdasd`)
-        .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCd9.eyJ0b2tlblNlZWQiOiJmdW5jdGlvbiByYW5kb21CeXRlcygpIHsgW25hdGl2ZSBjb2RlXSB9IiwiaWF0IjoxNDk5ODE5NzIyfQ.ZtmEWkIwMJoFvt0DOF9_p1zWeHEUlXZnCs8EKyIIId4`)
-        .send({
-          nope: 'non existent',
-        })
-        .then(res => {
-          throw res;
-        })
-        .catch(res => {
-          expect(res.status).toEqual(404);
         });
     });
   });
