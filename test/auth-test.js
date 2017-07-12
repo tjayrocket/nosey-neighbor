@@ -16,7 +16,7 @@ describe('Authentication', () => {
   afterEach(cleanDB);
 
   describe('Sign Up POST', () => {
-    it('Should return 200 and a token', () => {
+    it('should return a 200 status and a token.', () => {
       return superagent.post(`${API_URL}/api/signup`)
         .send({
           email: 'bill@test.com',
@@ -28,7 +28,7 @@ describe('Authentication', () => {
           expect(res.text.length > 1).toBeTruthy();
         });
     });
-    it('Should return 400 bad request', () => {
+    it('should return a 400 status code (bad request).', () => {
       return superagent.post(`${API_URL}/api/signup`)
         .send({
           email: 'mike@test.com',
@@ -44,7 +44,7 @@ describe('Authentication', () => {
   });
 
   describe('Sign In GET', () => {
-    it('Should return 200 and a token', () => {
+    it('should return 200 and a token.', () => {
       let tempUser;
       return mockUser.createOne()
         .then(userData => {
