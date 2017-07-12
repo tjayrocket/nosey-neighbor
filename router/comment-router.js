@@ -15,7 +15,7 @@ commentRouter.post(
     console.log('hit POST /api/comments');
     new Comment(req.body)
       .save()
-      .then(comment => res.status(201).json(comment._id))
+      .then(comment => res.status(201).json(comment))
       .catch(next);
   }
 );
@@ -57,6 +57,5 @@ commentRouter.put(
 
 commentRouter.delete('/api/comments/:id', (req, res, next) => {
   console.log('hit DELETE /api/comments/:id');
-
   Comment.findByIdAndRemove(req.params.id).then(res.status(204)).catch(next);
 });

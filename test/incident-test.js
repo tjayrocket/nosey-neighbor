@@ -8,7 +8,10 @@ const server = require('../lib/server.js');
 const cleanDB = require('./lib/clean-db.js');
 const mockIncident = require('./lib/mock-incident.js');
 const mockUser = require('./lib/mock-user.js');
-const mockResidence = require('./lib/mock-residence.js');
+
+// const mockComment = require('./lib/mock-comment.js');
+// const mockResidence = require('./lib/mock-residence.js');
+
 
 const API_URL = process.env.API_URL;
 
@@ -18,55 +21,57 @@ describe('Testing Incident Model (TJay) :', () => {
   afterEach(cleanDB);
 
   describe('Testing POST', () => {
-    it('should return 200 - blah blah', () => {
-      return mockIncident.createOne().then(userData => {
-        return superagent.post(`${API_URL}/api/incidents/${userData._id}`)
-          .set('Authorization', `Bearer ${userData.token}`)
-          .send({
-            timeStamp: Date.now(),
-            type: 'HOA',
-            description: 'Turd on Lawn'
-          })
-          .then(res => {
-            expect(res.status).toEqual(200);
-            expect(res.body.date).toExist();
-            expect(res.body.type).toEqual('HOA');
-            expect(res.body.description).toEqual('Turd on Lawn');
-          });
-      });
-
-    });
-
-    it('should return 400 bad request', () => {
-      return mockUser.createOne().then(userData => {
-        return superagent
-          .post(`${API_URL}/api/incidents/${userData._id}`)
-          .set('Authorization', `Bearer ${userData.token}`)
-          .send({
-            drinks: 'plentiful'
-          })
-          .then(res => {
-            throw res;
-          })
-          .catch(res => {
-            expect(res.status).toEqual(400);
-          });
-      });
-    });
-
-    it('should return with 404 - invalid body :', () => {
-      return superagent
-        .post(`${API_URL}/api/incidents/chunk`)
-        .send({
-          number: '30 Billion'
-        })
-        .then(res => {
-          throw res;
-        })
-        .catch(res => {
-          expect(res.status).toEqual(404);
+    it('should return 201 - blah blah', () => {
+      return mockIncident.createOne()
+        .then(mockIncidentData => {
+          return superagent.post(`${API_URL}/api/incidents`)
+            .set('Authorization', `Bearer ${mockIncidentData.userToken}`)
+            .send({
+              userId: mockIncidentData.userId,
+              type: mockIncidentData.type,
+              description: mockIncidentData.description,
+              residenceId: mockIncidentData.residenceId,
+            })
+            .then(res => {
+              expect(res.status).toEqual(201);
+              return superagent.get(`${API_URL}/api/incidents/${res.body}`)
+                .then(res => {
+                  console.log(res.body);
+                });
+            });
         });
     });
+
+    // it('should return 400 bad request', () => {
+    //   return mockUser.createOne().then(userData => {
+    //     return superagent
+    //       .post(`${API_URL}/api/incidents/${userData._id}`)
+    //       .set('Authorization', `Bearer ${userData.token}`)
+    //       .send({
+    //         drinks: 'plentiful'
+    //       })
+    //       .then(res => {
+    //         throw res;
+    //       })
+    //       .catch(res => {
+    //         expect(res.status).toEqual(400);
+    //       });
+    //   });
+    // });
+    //
+    // it('should return with 404 - invalid body :', () => {
+    //   return superagent
+    //     .post(`${API_URL}/api/incidents/chunk`)
+    //     .send({
+    //       number: '30 Billion'
+    //     })
+    //     .then(res => {
+    //       throw res;
+    //     })
+    //     .catch(res => {
+    //       expect(res.status).toEqual(404);
+    //     });
+    // });
   });
 
   describe('Testing GET - Incident Array', () => {

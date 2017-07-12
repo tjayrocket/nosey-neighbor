@@ -29,7 +29,7 @@ incidentSchema.pre('save', function(next) {
 });
 
 incidentSchema.post('save', function(doc, next) {
-  Residence.findById(doc.residence)
+  Residence.findById(doc.residenceId)
     .then(residence => {
       let incidentIDSet = new Set(residence.incidents);
       incidentIDSet.add(this._id.toString());
@@ -52,4 +52,4 @@ incidentSchema.post('remove', function(doc, next) {
     .catch(next);
 });
 
-module.exports = mongoose.model('incidents', incidentSchema);
+module.exports = mongoose.model('incident', incidentSchema);
