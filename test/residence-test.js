@@ -1,6 +1,7 @@
 'use strict';
 
 require('dotenv').config({path: `${__dirname}/../.test.env`});
+require('./lib/mock-aws.js');
 const superagent = require('superagent');
 const expect = require('expect');
 
@@ -58,7 +59,7 @@ describe('Testing Residence Model', () => {
     });
     it('should return 401 status code.', () => {
       return mockUser.createOne()
-        .then(userData => {
+        .then(() => {
           return superagent.post(`${API_URL}/api/residences`)
             .send({
               address: '742 Evergreen Terrace, Springfield'

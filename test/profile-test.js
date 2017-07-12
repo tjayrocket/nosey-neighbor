@@ -1,6 +1,7 @@
 'use strict';
 
 require('dotenv').config({path: `${__dirname}/../.test.env`});
+require('./lib/mock-aws.js');
 const superagent = require('superagent');
 const expect = require('expect');
 const server = require('../lib/server.js');
