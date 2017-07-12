@@ -12,5 +12,5 @@ authRouter.post('/api/signup', jsonParser, (req, res, next) => {
 });
 
 authRouter.get('/api/signin', basicAuth, (req, res, next) => {
-  res.user.tokenCreate().then(token => res.send(token)).catch(next);
+  req.user.tokenCreate().then(token => res.send(token)).catch(next);
 });
