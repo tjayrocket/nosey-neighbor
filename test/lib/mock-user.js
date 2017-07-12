@@ -18,6 +18,7 @@ mockUser.createOne = () => {
     })
     .then(token => {
       result.token = token;
+      // console.log('mockUser result: ', result);
       return result;
     });
 };
