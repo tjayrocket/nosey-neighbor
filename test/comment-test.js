@@ -98,7 +98,7 @@ describe.only('Testing Comment Model', () => {
               .get(`${API_URL}/api/comments/${userData._id}`)
               .then(res => {
                 expect(res.status).toEqual(200);
-                expect(res._id).toEqual(userData._id);
+                expect(res.body._id).toEqual(userData._id);
                 expect(res.body.content).toEqual('Neighbors are outside again, there\'s at least 20 cars at their house');
                 expect(res.body.date).toExist();
               });
@@ -136,7 +136,7 @@ describe.only('Testing Comment Model', () => {
               })
               .then(res => {
                 expect(res.status).toEqual(200);
-                expect(res._id).toEqual(userData._id);
+                expect(res.body._id).toEqual(userData._id);
                 expect(res.body.content).toEqual('Neighbors are outside again, there\'s like 100 cars at their house');
                 expect(res.body.date).toExist();
               });
