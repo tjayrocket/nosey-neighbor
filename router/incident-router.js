@@ -10,7 +10,7 @@ const incidentRouter = (module.exports = new Router());
 incidentRouter.post('/api/incidents', jsonParser, bearerAuth, (req, res, next) =>{
   new Incident(req.body)
     .save()
-    .then(incident => res.status(201).json(incident._id))
+    .then(incident => res.status(201).json(incident))
     .catch(next);
 });
 
@@ -20,6 +20,14 @@ incidentRouter.get('/api/incidents/:id', (req, res, next) => {
     .catch(next);
 });
 
+incidentRouter.get('/api/incidents', (req, res, next) => {
+  Incident.find({})
+    .then(incidents => res.status(200).json(incidents))
+    .catch(next);
+});
+
+
+// DELETE FOR PRODUCTION
 incidentRouter.put('/api/incidents/:id', jsonParser, (req, res, next) => {
   console.log('POST /api/incidents/:id');
   let options = {
@@ -37,3 +45,4 @@ incidentRouter.delete('/api/incidents/:id', (req, res, next) => {
     .then(() => res.sendStatus(204))
     .catch(next);
 });
+// DELETE FOR PRODUCTION
