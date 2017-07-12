@@ -5,7 +5,7 @@ const Incident = require('./incident.js');
 
 const commentSchema = mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
-  incidentId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+  incidentId: { type: mongoose.Schema.Types.ObjectId, ref: 'incident', required: true },
   content: { type: String, required: true, minlength: 1 },
   timeStamp: { type: Date, default: Date.now() }
 });
