@@ -28,17 +28,17 @@ incidentSchema.pre('save', function(next) {
     );
 });
 
-incidentSchema.post('save', function(doc, next) {
-  Residence.findById(doc.residence)
-    .then(residence => {
-      let incidentIDSet = new Set(residence.incidents);
-      incidentIDSet.add(this._id.toString());
-      residence.incidents = Array.from(incidentIDSet);
-      return residence.save();
-    })
-    .then(() => next())
-    .catch(next);
-});
+// incidentSchema.post('save', function(doc, next) {
+//   Residence.findById(doc.residence)
+//     .then(residence => {
+//       let incidentIDSet = new Set(residence.incidents);
+//       incidentIDSet.add(this._id.toString());
+//       residence.incidents = Array.from(incidentIDSet);
+//       return residence.save();
+//     })
+//     .then(() => next())
+//     .catch(next);
+// });
 
 incidentSchema.post('remove', function(doc, next) {
   Residence.findById(doc.residence)
