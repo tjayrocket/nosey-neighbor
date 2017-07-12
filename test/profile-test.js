@@ -60,22 +60,22 @@ describe('Testing Profile Model', () => {
     it('should return 401 unauthorized', () => {
       return mockResidence.createOne()
         .then(residence => {
-      return mockUser.createOne()
-        .then(userData => {
-          return superagent.post(`${API_URL}/api/profiles`)
-            .field('name', 'Phil')
-            .field('phone', '9998881234')
-            .field('residenceId', residence.id.toString())
-            .field('bio', 'I am Phil')
-            .attach('image', `${__dirname}/assets/me.jpg`)
-            .then(res => {
-              throw res;
-            })
-            .catch(res => {
-              expect(res.status).toEqual(401);
+          return mockUser.createOne()
+            .then(() => {
+              return superagent.post(`${API_URL}/api/profiles`)
+                .field('name', 'Phil')
+                .field('phone', '9998881234')
+                .field('residenceId', residence.id.toString())
+                .field('bio', 'I am Phil')
+                .attach('image', `${__dirname}/assets/me.jpg`)
+                .then(res => {
+                  throw res;
+                })
+                .catch(res => {
+                  expect(res.status).toEqual(401);
+                });
             });
         });
-      });
     });
   });
 
@@ -185,32 +185,32 @@ describe('Testing Profile Model', () => {
     it('should return 401 unauthorized', () => {
       return mockResidence.createOne()
         .then(residence => {
-      return mockUser.createOne()
-      .then(userData => {
-      return superagent.post(`${API_URL}/api/profiles`)
-        .set('Authorization', `Bearer ${userData.token}`)
-        .send({
-          residenceId: residence.id.toString(),
-          name: 'Phil',
-          phone: '1236530000',
-          bio: 'I am Phil',
-        })
-        .then(profile => {
-          return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
-            .send({
-              name: 'Phil',
-              phone: '1236530000',
-              bio: 'I am Phil',
-            })
-            .then(res => {
-              throw res;
-            })
-            .catch(res => {
-              expect(res.status).toEqual(401);
+          return mockUser.createOne()
+            .then(userData => {
+              return superagent.post(`${API_URL}/api/profiles`)
+                .set('Authorization', `Bearer ${userData.token}`)
+                .send({
+                  residenceId: residence.id.toString(),
+                  name: 'Phil',
+                  phone: '1236530000',
+                  bio: 'I am Phil',
+                })
+                .then(profile => {
+                  return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
+                    .send({
+                      name: 'Phil',
+                      phone: '1236530000',
+                      bio: 'I am Phil',
+                    })
+                    .then(res => {
+                      throw res;
+                    })
+                    .catch(res => {
+                      expect(res.status).toEqual(401);
+                    });
+                });
             });
         });
-      });
-    });
     });
     it('Should return with 404 not found', () => {
       return superagent.put(`${API_URL}/api/profiles/asdasdasdasd`)
