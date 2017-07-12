@@ -17,7 +17,10 @@ profileRouter.post('/api/profiles', bearerAuth, s3Upload('image'), (req, res, ne
     userId: req.user._id,
   })
     .save()
-    .then(profile => res.json(profile))
+    .then(profile => {
+      console.log('profile', profile);
+      res.json(profile);
+    })
     .catch(next);
 });
 
