@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  userName: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
   tokenSeed: { type: String, required: true, unique: true }
 });
@@ -49,7 +48,7 @@ userSchema.methods.tokenCreate = function() {
   );
 };
 
-const User = (module.exports = mongoose.model('user', userSchema));
+const User = (module.exports = mongoose.model('neighbor', userSchema));
 
 User.create = data => {
   let password = data.password;
