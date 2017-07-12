@@ -38,7 +38,7 @@ commentRouter.get('/api/comments', (req, res, next) => {
     .sort({ timeStamp: 'asc' })
     .skip(pageNumber * 5)
     .limit(5)
-    .then(comments => res.status(200).json(comments))
+    .then(comment => res.status(200).json(comment))
     .catch(next);
 });
 
@@ -54,9 +54,9 @@ commentRouter.put(
       .catch(next);
   }
 );
-// 
-// commentRouter.delete('/api/comments/:id', (req, res, next) => {
-//   console.log('hit DELETE /api/comments/:id');
-//
-//   Comment.findByIdAndRemove(req.params.id).then(res.status(204)).catch(next);
-// });
+
+commentRouter.delete('/api/comments/:id', (req, res, next) => {
+  console.log('hit DELETE /api/comments/:id');
+
+  Comment.findByIdAndRemove(req.params.id).then(res.status(204)).catch(next);
+});
