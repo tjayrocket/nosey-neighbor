@@ -58,7 +58,7 @@ describe('Testing Residence Model', () => {
     });
     it('should return 401 status code.', () => {
       return mockUser.createOne()
-        .then(userData => {
+        .then(() => {
           return superagent.post(`${API_URL}/api/residences`)
             .send({
               address: '742 Evergreen Terrace, Springfield'
