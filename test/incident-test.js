@@ -19,24 +19,24 @@ describe('Testing Incident Model (TJay) :', () => {
 
   describe('Testing POST', () => {
     it('should return 200 - blah blah', () => {
-      return mockUser.createOne().then(userData => {
+      return mockIncident.createOne().then(userData => {
         return superagent.post(`${API_URL}/api/incidents/${userData._id}`)
           .set('Authorization', `Bearer ${userData.token}`)
           .send({
             timeStamp: Date.now(),
             type: 'HOA',
             description: 'Turd on Lawn'
-              .then(res => {
-                expect(res.status).toEqual(200);
-                expect(res._id).toEqual(userData._id);
-                expect(res.body.date).toExist();
-                expect(res.body.type).toEqual('HOA');
-                expect(res.body.description).toEqual('Turd on Lawn');
-              })
+          })
+          .then(res => {
+            expect(res.status).toEqual(200);
+            expect(res.body.date).toExist();
+            expect(res.body.type).toEqual('HOA');
+            expect(res.body.description).toEqual('Turd on Lawn');
           });
-
       });
+
     });
+
     it('should return 400 bad request', () => {
       return mockUser.createOne().then(userData => {
         return superagent
@@ -54,7 +54,7 @@ describe('Testing Incident Model (TJay) :', () => {
       });
     });
 
-    it('should return with 400 - invalid body :', () => {
+    it('should return with 404 - invalid body :', () => {
       return superagent
         .post(`${API_URL}/api/incidents/chunk`)
         .send({
