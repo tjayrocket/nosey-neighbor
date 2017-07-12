@@ -136,14 +136,14 @@ describe('Testing Profile Model', () => {
                 .then(profile => {
                   return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
                     .set('Authorization', `Bearer ${userData.token}`)
-                    .field('name', 'Phil')
+                    .field('name', 'Paul')
                     .field('bio', 'I am no longer Phil, I am Paul');
                 })
                 .then(res => {
                   expect(res.status).toEqual(200);
                   expect(res.body.userId).toEqual(userData.user._id);
                   expect(res.body.name).toEqual('Paul');
-                  expect(res.body.phone).toEqual('1236530000');
+                  expect(res.body.phone).toEqual('9998881234');
                   expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
                   expect(res.body.residenceId).toEqual(residence.id.toString());
                   expect(res.body.photoURI).toExist();
