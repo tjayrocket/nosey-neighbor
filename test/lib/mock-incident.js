@@ -9,7 +9,6 @@ const mockIncident = module.exports = {};
 mockIncident.createOne = () => {
   return mockUser.createOne()
     .then(mockUserData => {
-      // console.log('mockUserData: ', mockUserData);
       let result = {};
       result.userId = mockUserData.user._id;
       result.type = faker.lorem.word();
@@ -27,7 +26,6 @@ mockIncident.createOne = () => {
             .save()
             .then(incident => {
               result.id = incident._id;
-              // console.log('result: ', result);
               return result;
             });
         });
