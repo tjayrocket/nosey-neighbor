@@ -52,4 +52,4 @@ incidentSchema.post('remove', function(doc, next) {
     .catch(next);
 });
 
-module.exports = mongoose.model('incidents', incidentSchema);
+module.exports = mongoose.model('incident', incidentSchema);
