@@ -18,7 +18,7 @@ describe('Testing Incident Model (TJay) :', () => {
   after(server.stop);
   afterEach(cleanDB);
 
-  describe.only('Testing POST', () => {
+  describe('Testing POST', () => {
     it('should return 201 - blah blah', () => {
       return mockIncident.createOne()
         .then(mockIncidentData => {
