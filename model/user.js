@@ -48,7 +48,7 @@ userSchema.methods.tokenCreate = function() {
   );
 };
 
-const User = (module.exports = mongoose.model('neighbor', userSchema));
+const User = (module.exports = mongoose.model('user', userSchema));
 
 User.create = data => {
   let password = data.password;
