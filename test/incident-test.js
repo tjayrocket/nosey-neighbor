@@ -8,8 +8,10 @@ const server = require('../lib/server.js');
 const cleanDB = require('./lib/clean-db.js');
 const mockIncident = require('./lib/mock-incident.js');
 const mockUser = require('./lib/mock-user.js');
+
 // const mockComment = require('./lib/mock-comment.js');
 // const mockResidence = require('./lib/mock-residence.js');
+
 
 const API_URL = process.env.API_URL;
 

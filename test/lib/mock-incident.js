@@ -6,7 +6,6 @@ const mockUser = require('./mock-user.js');
 const mockResidence = require('./mock-residence.js');
 
 const mockIncident = module.exports = {};
-
 mockIncident.createOne = () => {
   return mockUser.createOne()
     .then(mockUserData => {
