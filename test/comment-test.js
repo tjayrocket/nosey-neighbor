@@ -109,7 +109,7 @@ describe.only('Testing Comment Model', () => {
                   );
                   expect(res.body[0].timeStamp).toExist();
                 });
-            })
+            });
         });
     });
     it('Should return with 404 not found', () => {
@@ -151,7 +151,7 @@ describe.only('Testing Comment Model', () => {
                   );
                   expect(res.body.timeStamp).toExist();
                 });
-            })
+            });
         });
     });
     it('should return 400 bad request', () => {
@@ -200,6 +200,32 @@ describe.only('Testing Comment Model', () => {
                 })
                 .catch(err => {
                   expect(err.status).toEqual(404);
+                });
+            });
+        });
+    });
+    it('should return 401', () => {
+      return mockIncident
+        .createOne()
+        .then(incidentData => {
+          return superagent
+            .post(`${API_URL}/api/comments/`)
+            .set('Authorization', `Bearer ${incidentData.userToken}`)
+            .send({
+              userId: incidentData.userId,
+              incidentId: incidentData.id,
+              content: 'Neighbors are outside again, theres at least 20 cars at their house'
+            })
+            .then(res => {
+              return superagent
+                .put(`${API_URL}/api/comments/${res.body._id}`)
+                .send({
+                  userId: res.body.userId,
+                  incidentId: res.body.incidentId,
+                  content: 'Neighbors are outside again, theres like 100 cars at their house'
+                })
+                .catch(err => {
+                  expect(err.status).toEqual(401);
                 });
             });
         });
