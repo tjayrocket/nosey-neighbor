@@ -247,7 +247,6 @@ describe.only('Testing Comment Model', () => {
               content: 'Neighbors are outside again, theres at least 20 cars at their house'
             })
             .then(res => {
-              console.log('delete res.body', res.body)
               return superagent.delete(`${API_URL}/api/comments/${res.body._id}`)
                 .set('Authorization', `Bearer ${incidentData.userToken}`)
                 .then(res => {
