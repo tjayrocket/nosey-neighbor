@@ -2,20 +2,21 @@
 
 const faker = require('faker');
 const Incident = require('../../model/incident.js');
+const mockUser = require('./mock-user.js');
 
 const mockIncident = module.exports = {};
 
+let mockUserData = mockUser.createOne();
+
 mockIncident.createOne = () => {
   let result = {};
-  result.userId = faker.internet.userName();
-  result.timeStamp = faker.date.recent();
+  result.userId = mockUserData.user._id,
   result.type = faker.lorem.word();
-  result.description = faker.lorem.description();
+  result.description = faker.lorem.sentence();
   result.comments = faker.lorem.sentence();
 
   return new Incident({
     userId: result.userId,
-    timeStamp: result.timeStamp,
     type: result.type,
     description: result.description,
     comments: result.comments,
