@@ -25,6 +25,7 @@ describe('Testing Profile Model', () => {
               tempUser = userData;
               return superagent.post(`${API_URL}/api/profiles`)
                 .set('Authorization', `Bearer ${userData.token}`)
+                .field('userId', userData.user.id)
                 .field('name', 'Phil')
                 .field('residenceId', residence.id.toString())
                 .field('phone', '9998881234')
