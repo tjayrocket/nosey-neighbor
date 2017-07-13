@@ -46,11 +46,9 @@ describe('Authentication', () => {
 
   describe('Sign In GET', () => {
     it('should return 200 and a token.', () => {
-      let tempUser;
       return mockUser.createOne()
         .then(userData => {
-          tempUser = userData.user;
-          let encoded = new Buffer(`${tempUser.email}:${userData.password}`).toString('base64');
+          let encoded = new Buffer(`${userData.user.email}:${userData.password}`).toString('base64');
           return superagent.get(`${API_URL}/api/signin`)
             .set('Authorization', `Basic ${encoded}`);
         })
@@ -61,11 +59,9 @@ describe('Authentication', () => {
         });
     });
     it('Should return 401 unauthorized', () => {
-      let tempUser;
       return mockUser.createOne()
         .then(userData => {
-          tempUser = userData.user;
-          let encoded = new Buffer(`${tempUser.email}:wrongPASS`).toString('base64');
+          let encoded = new Buffer(`${userData.email}:wrongPASS`).toString('base64');
           return superagent.get(`${API_URL}/api/signin`)
             .set('Authorization', `Basic ${encoded}`);
         })
