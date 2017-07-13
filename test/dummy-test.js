@@ -3,8 +3,8 @@
 let expect = require('expect');
 require('./lib/mock-aws.js');
 
-describe('basic true test', () => {
-  it('should return as passing/true', () =>{
+describe('Testing Basic true test', () => {
+  it('should pass', () =>{
     expect(true).toEqual(true);
   });
 });

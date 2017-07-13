@@ -37,12 +37,12 @@ commentSchema.post('save', function(doc, next) {
 commentSchema.post('remove', function(doc, next) {
   Incident.findById(doc.incidentId)
     .then(incident => {
-      incident.comments = incident.comments.filter(
-        comment => comment._id !== doc._id
-      );
+      incident.comments = incident.comments.filter(comment => {
+        return comment.toString() !== doc._id.toString();
+      });
       return incident.save();
     })
-    .then(() => next)
+    .then(() => next())
     .catch(next);
 });
 

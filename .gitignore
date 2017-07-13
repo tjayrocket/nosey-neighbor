@@ -5,6 +5,7 @@ package-lock.json
 
 # Temp S3 Assets
 temp-assets
+lib/temp-assets
 
 # MongoDB
 db
