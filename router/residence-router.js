@@ -14,7 +14,7 @@ residenceRouter.post(
   (req, res, next) => {
     new Residence(req.body)
       .save()
-      .then(residence => res.status(201).json(residence._id))
+      .then(residence => res.status(201).json(residence))
       .catch(next);
   }
 );
@@ -43,7 +43,7 @@ residenceRouter.put('/api/residences/:id', jsonParser, bearerAuth, (req, res, ne
   if(req.body.address) return res.sendStatus(400);
   if(!Object.keys(req.body).length) return res.sendStatus(400);
 
-  Residence.findByIdAndUpdate(req.params.id, req.body)
+  Residence.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true})
     .then(residence => res.status(202).json(residence))
     .catch(next);
 });

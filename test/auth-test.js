@@ -11,13 +11,13 @@ const mockUser = require('./lib/mock-user.js');
 
 const API_URL = process.env.API_URL;
 
-describe('Authentication', () => {
+describe('Testing Authentication', () => {
   before(server.start);
   after(server.stop);
   afterEach(cleanDB);
 
   describe('Sign Up POST', () => {
-    it('should return a 201 status and a token.', () => {
+    it('should return 201 and a token', () => {
       return superagent.post(`${API_URL}/api/signup`)
         .send({
           email: 'bill@test.com',
@@ -29,7 +29,7 @@ describe('Authentication', () => {
           expect(res.text.length > 1).toBeTruthy();
         });
     });
-    it('should return a 400 status code (bad request).', () => {
+    it('should return 400 bad request', () => {
       return superagent.post(`${API_URL}/api/signup`)
         .send({
           email: 'mike@test.com',
@@ -45,7 +45,7 @@ describe('Authentication', () => {
   });
 
   describe('Sign In GET', () => {
-    it('should return 200 and a token.', () => {
+    it('should return 200 and a token', () => {
       return mockUser.createOne()
         .then(userData => {
           let encoded = new Buffer(`${userData.user.email}:${userData.password}`).toString('base64');
@@ -58,7 +58,7 @@ describe('Authentication', () => {
           expect(res.text.length > 1).toBeTruthy();
         });
     });
-    it('Should return 401 unauthorized', () => {
+    it('should return 401 unauthorized', () => {
       return mockUser.createOne()
         .then(userData => {
           let encoded = new Buffer(`${userData.email}:wrongPASS`).toString('base64');
@@ -67,6 +67,22 @@ describe('Authentication', () => {
         })
         .catch(res => {
           expect(res.status).toEqual(401);
+        });
+    });
+  });
+
+  describe('Basic Auth Error GET', () => {
+    it('should return 200 and a token', () => {
+      return mockUser.createOne()
+        .then(userData => {
+          let encoded = new Buffer(`${userData.user.email}:${userData.password}`).toString('base64');
+          return superagent.get(`${API_URL}/api/signin`)
+            .set('Authorization', `Basic ${encoded}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.text).toExist();
+          expect(res.text.length > 1).toBeTruthy();
         });
     });
   });

@@ -38,12 +38,9 @@ commentSchema.post('remove', function(doc, next) {
   console.log('booyaa', doc);
   Incident.findById(doc.incidentId)
     .then(incident => {
-      incident.comments = incident.comments.filter(
-        comment => {
-          console.log('lulwut', comment);
-          return comment != doc._id;
-        });
-      console.log('incident', incident);
+      incident.comments = incident.comments.filter(comment => {
+        return comment.toString() !== doc._id.toString();
+      });
       return incident.save();
     })
     .then(() => next())

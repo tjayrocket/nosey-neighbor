@@ -17,8 +17,8 @@ describe('Testing Residence Model', () => {
   after(server.stop);
   afterEach(cleanDB);
 
-  describe('Testing GET', () => {
-    it('should return 200 status code and an array of residences.', () => {
+  describe('Residence GET', () => {
+    it('should return 200 and an array of residences', () => {
       return mockResidence.createOne()
         .then(tempResidence => {
           return superagent.get(`${API_URL}/api/residences`)
@@ -29,7 +29,7 @@ describe('Testing Residence Model', () => {
             });
         });
     });
-    it('should return 200 status code and a single residence object.', () => {
+    it('should return 200 and the residence', () => {
       return mockResidence.createOne()
         .then(tempResidence => {
           return superagent.get(`${API_URL}/api/residences/${tempResidence.id}`)
@@ -42,8 +42,8 @@ describe('Testing Residence Model', () => {
     });
   });
 
-  describe('Testing POST', () => {
-    it('should return 201 status code and a residence ID.', () => {
+  describe('Residence POST', () => {
+    it('should return 201 and the residence', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
@@ -53,11 +53,11 @@ describe('Testing Residence Model', () => {
             })
             .then(res => {
               expect(res.status).toEqual(201);
-              expect(res.body).toExist();
+              expect(res.body.address).toEqual('742 Evergreen Terrace, Springfield');
             });
         });
     });
-    it('should return 401 status code.', () => {
+    it('should return 401 unauthorized', () => {
       return mockUser.createOne()
         .then(() => {
           return superagent.post(`${API_URL}/api/residences`)
@@ -69,7 +69,7 @@ describe('Testing Residence Model', () => {
             });
         });
     });
-    it('should return 409 status code.', () => {
+    it('should return 409 db conflict', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
@@ -91,7 +91,7 @@ describe('Testing Residence Model', () => {
     });
   });
   describe('Testing PUT', () => {
-    it('should return 202 status code and GET request should return proper modifications.', () => {
+    it('should return 202 and the new residence', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
@@ -102,22 +102,20 @@ describe('Testing Residence Model', () => {
             })
             .then((res) => {
               let newOccupants = ['homer', 'marge', 'bart', 'lisa', 'maggie'];
-              return superagent.put(`${API_URL}/api/residences/${res.body}`)
+              return superagent.put(`${API_URL}/api/residences/${res.body._id}`)
                 .set('Authorization', `Bearer ${userData.token}`)
                 .send({
                   occupants: newOccupants
                 })
                 .then(res => {
                   expect(res.status).toEqual(202);
-                  return superagent.get(`${API_URL}/api/residences/${res.body._id}`)
-                    .then((res) => {
-                      expect(res.body.occupants).toEqual(newOccupants);
-                    });
+                  expect(res.body.address).toEqual('742 Evergreen Terrace, Springfield');
+                  expect(res.body.occupants).toEqual(newOccupants);
                 });
             });
         });
     });
-    it('should return 401 status code.', () => {
+    it('should return 401 unauthorized', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
@@ -128,7 +126,7 @@ describe('Testing Residence Model', () => {
             })
             .then((res) => {
               let newOccupants = ['homer', 'marge', 'bart', 'lisa', 'maggie'];
-              return superagent.put(`${API_URL}/api/residences/${res.body}`)
+              return superagent.put(`${API_URL}/api/residences/${res.body._id}`)
                 .send({
                   occupants: newOccupants
                 })
@@ -138,7 +136,7 @@ describe('Testing Residence Model', () => {
             });
         });
     });
-    it('should return 400 status code when address is attempted to be modified.', () => {
+    it('should return 400 bad request when invalid body is sent', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
@@ -149,7 +147,7 @@ describe('Testing Residence Model', () => {
             })
             .then((res) => {
               let newOccupants = ['homer', 'marge', 'bart', 'lisa', 'maggie'];
-              return superagent.put(`${API_URL}/api/residences/${res.body}`)
+              return superagent.put(`${API_URL}/api/residences/${res.body._id}`)
                 .set('Authorization', `Bearer ${userData.token}`)
                 .send({
                   address: '742 Evergreen Terrace, Springfield, Anystate, USA',
@@ -161,7 +159,7 @@ describe('Testing Residence Model', () => {
             });
         });
     });
-    it('should return 400 status code when no body is sent.', () => {
+    it('should return 400 bad request when no body is sent', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
@@ -171,7 +169,7 @@ describe('Testing Residence Model', () => {
               occupants: ['homer', 'marge']
             })
             .then((res) => {
-              return superagent.put(`${API_URL}/api/residences/${res.body}`)
+              return superagent.put(`${API_URL}/api/residences/${res.body._id}`)
                 .set('Authorization', `Bearer ${userData.token}`)
                 .catch(res => {
                   expect(res.status).toEqual(400);
