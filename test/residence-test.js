@@ -52,7 +52,10 @@ describe('Testing Residence Model', () => {
               address: '742 Evergreen Terrace, Springfield'
             })
             .then(res => {
+              console.log(res.body);
               expect(res.status).toEqual(201);
+              expect(res.body).toExist();
+              expect(res.body.image).toExist();
               expect(res.body.address).toEqual('742 Evergreen Terrace, Springfield');
             });
         });
