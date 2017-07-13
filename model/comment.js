@@ -35,7 +35,6 @@ commentSchema.post('save', function(doc, next) {
 });
 
 commentSchema.post('remove', function(doc, next) {
-  console.log('booyaa', doc);
   Incident.findById(doc.incidentId)
     .then(incident => {
       incident.comments = incident.comments.filter(comment => {
