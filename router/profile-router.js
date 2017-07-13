@@ -14,7 +14,7 @@ profileRouter.post('/api/profiles', bearerAuth, s3Upload('image'), (req, res, ne
     residenceId: req.body.residenceId,
     phone: req.body.phone,
     bio: req.body.bio,
-    awsPhoto: req.s3Data.Location,
+    image: req.s3Data.Location,
     userId: req.user._id,
   })
     .save()
