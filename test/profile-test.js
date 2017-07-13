@@ -124,7 +124,7 @@ describe('Testing Profile Model', () => {
 
   describe('Profile PUT', () => {
     it('should return 202 and the new profile', () => {
-      let tempUser, tempProfile;
+      let tempUser;
       return mockResidence.createOne()
         .then(residence => {
           return mockUser.createOne()
@@ -139,7 +139,6 @@ describe('Testing Profile Model', () => {
                 .attach('image', `${__dirname}/assets/me.jpg`);
             })
             .then(profile => {
-              tempProfile = profile;
               return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
                 .set('Authorization', `Bearer ${tempUser.token}`)
                 .send({
@@ -149,15 +148,12 @@ describe('Testing Profile Model', () => {
             })
             .then(res => {
               expect(res.status).toEqual(202);
-              return superagent.get(`${API_URL}/api/profiles/${tempProfile.body._id}`)
-                .then(res => {
-                  expect(res.body.userId).toEqual(tempUser.user._id.toString());
-                  expect(res.body.name).toEqual('Paul');
-                  expect(res.body.phone).toEqual('9998881234');
-                  expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
-                  expect(res.body.residenceId).toEqual(residence.id.toString());
-                  expect(res.body.image).toExist();
-                });
+              expect(res.body.userId).toEqual(tempUser.user._id.toString());
+              expect(res.body.name).toEqual('Paul');
+              expect(res.body.phone).toEqual('9998881234');
+              expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
+              expect(res.body.residenceId).toEqual(residence.id.toString());
+              expect(res.body.image).toExist();
             });
         });
     }).timeout(3000);

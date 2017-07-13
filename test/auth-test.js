@@ -70,4 +70,20 @@ describe('Testing Authentication', () => {
         });
     });
   });
+
+  describe('Basic Auth Error GET', () => {
+    it('should return 200 and a token', () => {
+      return mockUser.createOne()
+        .then(userData => {
+          let encoded = new Buffer(`${userData.user.email}:${userData.password}`).toString('base64');
+          return superagent.get(`${API_URL}/api/signin`)
+            .set('Authorization', `Basic ${encoded}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.text).toExist();
+          expect(res.text.length > 1).toBeTruthy();
+        });
+    });
+  });
 });
