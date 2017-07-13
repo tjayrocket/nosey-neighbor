@@ -5,7 +5,7 @@ const { Router } = require('express');
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
 const Comment = require('../model/comment.js');
 
-const commentRouter = (module.exports = new Router());
+const commentRouter = module.exports = new Router();
 
 commentRouter.post(
   '/api/comments',
