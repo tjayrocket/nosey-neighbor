@@ -12,6 +12,7 @@ commentRouter.post(
   jsonParser,
   bearerAuth,
   (req, res, next) => {
+    req.body.userId = req.user._id;
     new Comment(req.body)
       .save()
       .then(comment => res.status(201).json(comment))
@@ -26,7 +27,6 @@ commentRouter.get('/api/comments/:id', (req, res, next) => {
 });
 
 commentRouter.get('/api/comments', (req, res, next) => {
-
   let pageNumber = Number(req.query.page);
   if (!pageNumber || pageNumber < 1) pageNumber = 1;
   pageNumber--;
@@ -44,6 +44,7 @@ commentRouter.put(
   jsonParser,
   bearerAuth,
   (req, res, next) => {
+    req.body.userId = req.user._id;
     Comment.findByIdAndUpdate(req.params.id, req.body)
       .then(comment => res.status(202).json(comment))
       .catch(next);

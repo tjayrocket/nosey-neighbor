@@ -8,6 +8,7 @@ const Incident = require('../model/incident.js');
 const incidentRouter = module.exports = new Router();
 
 incidentRouter.post('/api/incidents', jsonParser, bearerAuth, (req, res, next) =>{
+  req.body.userId = req.user._id;
   new Incident(req.body)
     .save()
     .then(incident => res.status(201).json(incident))

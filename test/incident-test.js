@@ -10,7 +10,6 @@ const cleanDB = require('./lib/clean-db.js');
 const mockIncident = require('./lib/mock-incident.js');
 const mockUser = require('./lib/mock-user.js');
 
-// const mockComment = require('./lib/mock-comment.js');
 const mockResidence = require('./lib/mock-residence.js');
 
 
@@ -22,7 +21,7 @@ describe('Testing Incident Model (TJay) :', () => {
   afterEach(cleanDB);
 
   describe('Testing POST', () => {
-    it('should return 201 - blah blah', () => {
+    it('should return 201 okay', () => {
       return mockUser.createOne()
         .then(mockUserData => {
           return mockResidence.createOne()
@@ -30,7 +29,6 @@ describe('Testing Incident Model (TJay) :', () => {
               return superagent.post(`${API_URL}/api/incidents`)
                 .set('Authorization', `Bearer ${mockUserData.token}`)
                 .send({
-                  userId: mockUserData.user._id,
                   type: 'HOA',
                   description: 'Turd On lawn',
                   residenceId: mockResidenceData.id,
@@ -42,7 +40,7 @@ describe('Testing Incident Model (TJay) :', () => {
         });
     });
 
-    it('should return 400 - blah blah', () => {
+    it('should return 400 bad request', () => {
       return mockUser.createOne()
         .then(mockUserData => {
           return superagent.post(`${API_URL}/api/incidents`)
@@ -54,14 +52,13 @@ describe('Testing Incident Model (TJay) :', () => {
         });
     });
 
-    it('should return 401 - blah blah', () => {
+    it('should return 401 unauthorized', () => {
       return mockUser.createOne()
-        .then(mockUserData => {
+        .then(() => {
           return mockResidence.createOne()
             .then(mockResidenceData => {
               return superagent.post(`${API_URL}/api/incidents`)
                 .send({
-                  userId: mockUserData.user._id,
                   type: 'HOA',
                   description: 'Turd On lawn',
                   residenceId: mockResidenceData.id,
@@ -73,7 +70,7 @@ describe('Testing Incident Model (TJay) :', () => {
         });
     });
 
-    it('should return with 404 - invalid body :', () => {
+    it('should return with 404 not found', () => {
       return superagent
         .post(`${API_URL}/api/incidents/chunk`)
         .send({
@@ -89,7 +86,7 @@ describe('Testing Incident Model (TJay) :', () => {
   });
 
   describe('Testing GET - Incident Array', () => {
-    it('should return 200 - blah blah', () => {
+    it('should return 200 okay', () => {
       return mockIncident.createOne().then(() => {
         return superagent
           .get(`${API_URL}/api/incidents/`)
@@ -102,7 +99,7 @@ describe('Testing Incident Model (TJay) :', () => {
   });
 
   describe('Testing GET - Single Incident', () => {
-    it('should return 200 - blah blah', () => {
+    it('should return 200 okay', () => {
       return mockIncident.createOne().then(mockIncidentData => {
         return superagent
           .get(`${API_URL}/api/incidents/${mockIncidentData.id}`)
@@ -118,7 +115,7 @@ describe('Testing Incident Model (TJay) :', () => {
       });
     });
 
-    it('Should return 404', () => {
+    it('Should return 404 not found', () => {
       return superagent.get(`${API_URL}/api/incidents/chunks`)
         .then(res => {
           throw res;
