@@ -72,17 +72,46 @@ describe('Testing Authentication', () => {
   });
 
   describe('Basic Auth Error GET', () => {
-    it('should return 200 and a token', () => {
+    it('should return 401 unauthorized', () => {
       return mockUser.createOne()
         .then(userData => {
           let encoded = new Buffer(`${userData.user.email}:${userData.password}`).toString('base64');
           return superagent.get(`${API_URL}/api/signin`)
+            .set('Authorization', `Advanced ${encoded}`);
+        })
+        .then(res => {
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(401);
+        });
+    });
+    it('should return 401 unauthorized', () => {
+      return mockUser.createOne()
+        .then(userData => {
+          let encoded = new Buffer(`:${userData.password}`).toString('base64');
+          return superagent.get(`${API_URL}/api/signin`)
             .set('Authorization', `Basic ${encoded}`);
         })
         .then(res => {
-          expect(res.status).toEqual(200);
-          expect(res.text).toExist();
-          expect(res.text.length > 1).toBeTruthy();
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(401);
+        });
+    });
+    it('should return 401 unauthorized', () => {
+      return mockUser.createOne()
+        .then(userData => {
+          let encoded = new Buffer(`nonexistent@email.com:${userData.password}`).toString('base64');
+          return superagent.get(`${API_URL}/api/signin`)
+            .set('Authorization', `Advanced ${encoded}`);
+        })
+        .then(res => {
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(401);
         });
     });
   });
