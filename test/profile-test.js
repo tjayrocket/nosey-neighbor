@@ -42,7 +42,7 @@ describe('Testing Profile Model', () => {
               expect(res.body.photoURI).toExist();
             });
         });
-    });
+    }).timeout(3000);
     it('should return 400 bad request', () => {
       return mockUser.createOne()
         .then(userData => {
@@ -110,7 +110,7 @@ describe('Testing Profile Model', () => {
                 });
             });
         });
-    });
+    }).timeout(3000);
     it('Should return with 404 not found', () => {
       return superagent.get(`${API_URL}/api/profiles/dasdasdasdasd`)
         .then(res => {
@@ -160,7 +160,7 @@ describe('Testing Profile Model', () => {
                 });
             });
         });
-    });
+    }).timeout(3000);
     it('should return 400 bad request', () => {
       let tempUser;
       return mockResidence.createOne()
