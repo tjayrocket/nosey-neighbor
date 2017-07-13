@@ -235,7 +235,7 @@ describe('Testing Comment Model', () => {
   });
 
   describe('Testing DELETE', () => {
-    it('should return 204', () => {
+    it.only('should return 204', () => {
       return mockIncident
         .createOne()
         .then(incidentData => {
@@ -249,10 +249,13 @@ describe('Testing Comment Model', () => {
             })
             .then(res => {
               return superagent.delete(`${API_URL}/api/comments/${res.body._id}`)
-                .set('Authorization', `Bearer ${incidentData.userToken}`)
-                .then(res => {
-                  expect(res.status).toEqual(204);
-                });
+                .set('Authorization', `Bearer ${incidentData.userToken}`);
+            })
+            .then(res => {
+              expect(res.status).toEqual(204);
+              return superagent.get(`${API_URL}/api/incidents/${incidentData.id}`)
+                .then(res =>
+                  expect(res.body.comments[0]).toNotExist());
             });
         });
     });

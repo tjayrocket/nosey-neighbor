@@ -35,14 +35,18 @@ commentSchema.post('save', function(doc, next) {
 });
 
 commentSchema.post('remove', function(doc, next) {
+  console.log('booyaa', doc);
   Incident.findById(doc.incidentId)
     .then(incident => {
       incident.comments = incident.comments.filter(
-        comment => comment._id !== doc._id
-      );
+        comment => {
+          console.log('lulwut', comment);
+          return comment != doc._id;
+        });
+      console.log('incident', incident);
       return incident.save();
     })
-    .then(() => next)
+    .then(() => next())
     .catch(next);
 });
 
