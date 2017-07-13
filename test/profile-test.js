@@ -16,8 +16,8 @@ describe('Testing Profile Model', () => {
   after(server.stop);
   afterEach(cleanDB);
 
-  describe('Testing POST', () => {
-    it('should return 201', () => {
+  describe('Profile POST', () => {
+    it('should return 201 and the profile', () => {
       let tempUser;
       return mockResidence.createOne()
         .then(residence => {
@@ -81,9 +81,9 @@ describe('Testing Profile Model', () => {
     });
   });
 
-  describe('Testing GET', () => {
+  describe('Profile GET', () => {
     let tempUser;
-    it('should return 200', () => {
+    it('should return 200 and the profile', () => {
       return mockResidence.createOne()
         .then(residence => {
           return mockUser.createOne()
@@ -111,7 +111,7 @@ describe('Testing Profile Model', () => {
             });
         });
     }).timeout(3000);
-    it('Should return with 404 not found', () => {
+    it('Should return 404 not found', () => {
       return superagent.get(`${API_URL}/api/profiles/dasdasdasdasd`)
         .then(res => {
           throw res;
@@ -122,8 +122,8 @@ describe('Testing Profile Model', () => {
     });
   });
 
-  describe('Testing PUT', () => {
-    it('should return 202', () => {
+  describe('Profile PUT', () => {
+    it('should return 202 and the new profile', () => {
       let tempUser, tempProfile;
       return mockResidence.createOne()
         .then(residence => {
@@ -216,7 +216,7 @@ describe('Testing Profile Model', () => {
           expect(res.status).toEqual(401);
         });
     });
-    it('Should return with 404 not found', () => {
+    it('should return 404 not found', () => {
       return mockResidence.createOne()
         .then(residence => {
           return mockUser.createOne()

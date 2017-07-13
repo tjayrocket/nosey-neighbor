@@ -45,7 +45,7 @@ commentRouter.put(
   bearerAuth,
   (req, res, next) => {
     req.body.userId = req.user._id;
-    Comment.findByIdAndUpdate(req.params.id, req.body)
+    Comment.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
       .then(comment => res.status(202).json(comment))
       .catch(next);
   }
