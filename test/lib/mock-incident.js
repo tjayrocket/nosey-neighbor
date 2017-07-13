@@ -14,6 +14,7 @@ mockIncident.createOne = () => {
       result.type = faker.lorem.word();
       result.description = faker.lorem.sentence();
       result.userToken = mockUserData.token;
+
       return mockResidence.createOne()
         .then(mockResidenceData => {
           result.residenceId = mockResidenceData.id;
@@ -26,6 +27,7 @@ mockIncident.createOne = () => {
             .save()
             .then(incident => {
               result.id = incident._id;
+              result.incident = incident;
               return result;
             });
         });

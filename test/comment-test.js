@@ -7,6 +7,7 @@ const expect = require('expect');
 const server = require('../lib/server.js');
 const cleanDB = require('./lib/clean-db.js');
 const mockIncident = require('./lib/mock-incident.js');
+const Incident = require('../model/incident.js');
 
 const API_URL = process.env.API_URL;
 
@@ -16,7 +17,7 @@ describe('Testing Comment Model', () => {
   afterEach(cleanDB);
 
   describe('Testing POST', () => {
-    it('should return 201', () => {
+    it('should return 201 and the incident', () => {
       return mockIncident.createOne().then(incidentData => {
         return superagent
           .post(`${API_URL}/api/comments`)
@@ -32,6 +33,20 @@ describe('Testing Comment Model', () => {
               'Jannets dog was in my yard, digging in garden'
             );
             expect(res.body.timeStamp).toExist();
+          });
+      });
+    });
+    it('should return 401 unauthorized', () => {
+      return mockIncident.createOne().then(incidentData => {
+        return superagent
+          .post(`${API_URL}/api/comments`)
+          .set('Authorization', `Bearer`)
+          .send({
+            incidentId: incidentData.id,
+            content: 'Jannets dog was in my yard, digging in garden'
+          })
+          .catch(res => {
+            expect(res.status).toEqual(401);
           });
       });
     });
@@ -53,7 +68,7 @@ describe('Testing Comment Model', () => {
       });
     });
 
-    it('should return 401', () => {
+    it('should return 401 unauthorized', () => {
       return mockIncident.createOne().then(incidentData => {
         return (
           superagent
@@ -68,7 +83,7 @@ describe('Testing Comment Model', () => {
         );
       });
     });
-    it('Should return with 404 not found', () => {
+    it('should return 404 not found', () => {
       return superagent
         .post(`${API_URL}/api/comments/asdasdasdasd`)
         .send({
@@ -83,8 +98,8 @@ describe('Testing Comment Model', () => {
     });
   });
 
-  describe('Testing GET - Incident Array', () => {
-    it('should return 200', () => {
+  describe('Comment GET', () => {
+    it('should return 200 and an array', () => {
       return mockIncident
         .createOne()
         .then(incidentData => {
@@ -109,7 +124,7 @@ describe('Testing Comment Model', () => {
             });
         });
     });
-    it('Should return with 404 not found', () => {
+    it('should return 404 not found', () => {
       return superagent
         .get(`${API_URL}/api/comments/asdasdasdasd`)
         .catch(res => {
@@ -118,8 +133,8 @@ describe('Testing Comment Model', () => {
     });
   });
 
-  describe('Testing PUT', () => {
-    it('should return 202', () => {
+  describe('Comment PUT', () => {
+    it('should return 202 and the new comment', () => {
       return mockIncident
         .createOne()
         .then(incidentData => {
@@ -142,7 +157,7 @@ describe('Testing Comment Model', () => {
                   expect(res.status).toEqual(202);
                   expect(res.body._id).toExist();
                   expect(res.body.content).toEqual(
-                    'Neighbors are outside again, theres at least 20 cars at their house'
+                    'Neighbors are outside again, theres like 100 cars at their house'
                   );
                   expect(res.body.timeStamp).toExist();
                 });
@@ -196,7 +211,7 @@ describe('Testing Comment Model', () => {
             });
         });
     });
-    it('should return 401', () => {
+    it('should return 401 unauthorized', () => {
       return mockIncident
         .createOne()
         .then(incidentData => {
@@ -223,11 +238,13 @@ describe('Testing Comment Model', () => {
 
   });
 
-  describe('Testing DELETE', () => {
-    it('should return 204', () => {
+  describe('Comment DELETE', () => {
+    it('should return 204 deleted', () => {
+      let tempIncident;
       return mockIncident
         .createOne()
         .then(incidentData => {
+          tempIncident = incidentData;
           return superagent
             .post(`${API_URL}/api/comments/`)
             .set('Authorization', `Bearer ${incidentData.userToken}`)
@@ -237,10 +254,14 @@ describe('Testing Comment Model', () => {
             })
             .then(res => {
               return superagent.delete(`${API_URL}/api/comments/${res.body._id}`)
-                .set('Authorization', `Bearer ${incidentData.userToken}`)
-                .then(res => {
-                  expect(res.status).toEqual(204);
-                });
+                .set('Authorization', `Bearer ${incidentData.userToken}`);
+            })
+            .then(res => {
+              expect(res.status).toEqual(204);
+              return Incident.findById(tempIncident.incident._id);
+            })
+            .then(incident => {
+              expect(incident.comments.length).toEqual(0);
             });
         });
     });
@@ -265,7 +286,7 @@ describe('Testing Comment Model', () => {
             });
         });
     });
-    it('should return 401', () => {
+    it('should return 401 unauthorized', () => {
       return mockIncident
         .createOne()
         .then(incidentData => {

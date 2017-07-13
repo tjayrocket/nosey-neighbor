@@ -45,14 +45,15 @@ commentRouter.put(
   bearerAuth,
   (req, res, next) => {
     req.body.userId = req.user._id;
-    Comment.findByIdAndUpdate(req.params.id, req.body)
+    Comment.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
       .then(comment => res.status(202).json(comment))
       .catch(next);
   }
 );
 
 commentRouter.delete('/api/comments/:id', bearerAuth, (req, res, next) => {
-  Comment.findByIdAndRemove(req.params.id)
+  Comment.findById(req.params.id)
+    .then(comment => comment.remove())
     .then(() => res.sendStatus(204))
     .catch(next);
 });
