@@ -9,7 +9,6 @@ const s3 = new S3();
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
 const Residence = require('../model/residence.js');
 const superagent = require('superagent');
-require('dotenv').config({path: `${__dirname}/../.env`});
 const residenceRouter = module.exports = new Router();
 
 residenceRouter.post(

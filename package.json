@@ -36,7 +36,6 @@
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "cors": "^2.8.3",
-    "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "fs-extra": "^3.0.1",
     "jsonwebtoken": "^7.4.1",
