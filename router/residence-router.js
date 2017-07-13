@@ -4,6 +4,9 @@ const jsonParser = require('body-parser').json();
 const { Router } = require('express');
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
 const Residence = require('../model/residence.js');
+const fs = require('fs-extra');
+const superagent = require('superagent');
+require('dotenv').config({path: `${__dirname}/../.env`});
 
 const residenceRouter = module.exports = new Router();
 
@@ -12,12 +15,16 @@ residenceRouter.post(
   jsonParser,
   bearerAuth,
   (req, res, next) => {
-    new Residence(req.body)
-      .save()
-      .then(residence => res.status(201).json(residence._id))
-      .catch(next);
-  }
-);
+    return superagent.get(`https://maps.googleapis.com/maps/api/streetview?size=200x200&key=${process.env.STREET_VIEW_KEY}&location=${req.body.address}`)
+      .then(img => {
+        new Residence(req.body)
+          .then(residence => {
+          .save()
+          .then(residence => res.status(201).json(residence._id))
+          .catch(next);
+        });
+      })
+  });
 
 residenceRouter.get('/api/residences/:id', (req, res, next) => {
   Residence.findById(req.params.id)
