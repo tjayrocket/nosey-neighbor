@@ -7,6 +7,7 @@ const expect = require('expect');
 const server = require('../lib/server.js');
 const cleanDB = require('./lib/clean-db.js');
 const mockIncident = require('./lib/mock-incident.js');
+const Incident = require('../model/incident.js');
 
 const API_URL = process.env.API_URL;
 
@@ -225,9 +226,11 @@ describe('Testing Comment Model', () => {
 
   describe('Comment DELETE', () => {
     it('should return 204 deleted', () => {
+      let tempIncident;
       return mockIncident
         .createOne()
         .then(incidentData => {
+          tempIncident = incidentData;
           return superagent
             .post(`${API_URL}/api/comments/`)
             .set('Authorization', `Bearer ${incidentData.userToken}`)
@@ -237,10 +240,14 @@ describe('Testing Comment Model', () => {
             })
             .then(res => {
               return superagent.delete(`${API_URL}/api/comments/${res.body._id}`)
-                .set('Authorization', `Bearer ${incidentData.userToken}`)
-                .then(res => {
-                  expect(res.status).toEqual(204);
-                });
+                .set('Authorization', `Bearer ${incidentData.userToken}`);
+            })
+            .then(res => {
+              expect(res.status).toEqual(204);
+              return Incident.findById(tempIncident.incident._id);
+            })
+            .then(incident => {
+              expect(incident.comments.length).toEqual(0);
             });
         });
     });
