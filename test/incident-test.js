@@ -43,7 +43,9 @@ describe('Testing Incident Model', () => {
         });
     });
 
-    it('should return 400 bad request', () => {
+
+    it('should return 400 - Invalid Body', () => {
+
       return mockUser.createOne()
         .then(mockUserData => {
           return superagent.post(`${API_URL}/api/incidents`)
@@ -55,7 +57,9 @@ describe('Testing Incident Model', () => {
         });
     });
 
-    it('should return 401 unauthorized', () => {
+
+    it('should return 401 - Unauthorized Access', () => {
+
       return mockUser.createOne()
         .then(() => {
           return mockResidence.createOne()
@@ -75,7 +79,7 @@ describe('Testing Incident Model', () => {
 
     it('should return 404 not found', () => {
       return superagent
-        .post(`${API_URL}/api/incidents/chunk`)
+        .post(`${API_URL}/api/incidents/chunks`)
         .send({
           number: '30 Billion'
         })
@@ -88,8 +92,8 @@ describe('Testing Incident Model', () => {
     });
   });
 
-  describe('Incident GET', () => {
-    it('should return 200 and an array of incidents', () => {
+  describe('Testing GET - Incident Array', () => {
+    it('should return 200 - Array of Incidents', () => {
       return mockIncident.createOne().then(() => {
         return superagent
           .get(`${API_URL}/api/incidents`)
@@ -101,8 +105,8 @@ describe('Testing Incident Model', () => {
     });
   });
 
-  describe('Incident GET', () => {
-    it('should return 200 and the incident', () => {
+  describe('Testing GET - Single Incident', () => {
+    it('should return 200 - Single Incidenrt Report', () => {
       return mockIncident.createOne().then(mockIncidentData => {
         return superagent
           .get(`${API_URL}/api/incidents/${mockIncidentData.id}`)
