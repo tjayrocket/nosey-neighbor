@@ -36,6 +36,20 @@ describe('Testing Comment Model', () => {
           });
       });
     });
+    it('should return 401 unauthorized', () => {
+      return mockIncident.createOne().then(incidentData => {
+        return superagent
+          .post(`${API_URL}/api/comments`)
+          .set('Authorization', `Bearer`)
+          .send({
+            incidentId: incidentData.id,
+            content: 'Jannets dog was in my yard, digging in garden'
+          })
+          .catch(res => {
+            expect(res.status).toEqual(401);
+          });
+      });
+    });
 
     it('should return 400 bad request', () => {
       return mockIncident.createOne().then(incidentData => {
