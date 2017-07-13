@@ -52,8 +52,10 @@ describe('Testing Residence Model', () => {
               address: '742 Evergreen Terrace, Springfield'
             })
             .then(res => {
+              console.log(res.body);
               expect(res.status).toEqual(201);
               expect(res.body).toExist();
+              expect(res.body.image).toExist();
             });
         });
     });
@@ -102,7 +104,7 @@ describe('Testing Residence Model', () => {
             })
             .then((res) => {
               let newOccupants = ['homer', 'marge', 'bart', 'lisa', 'maggie'];
-              return superagent.put(`${API_URL}/api/residences/${res.body}`)
+              return superagent.put(`${API_URL}/api/residences/${res.body._id}`)
                 .set('Authorization', `Bearer ${userData.token}`)
                 .send({
                   occupants: newOccupants
