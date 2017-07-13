@@ -30,7 +30,7 @@ describe('Testing Profile Model', () => {
                 .field('residenceId', residence.id.toString())
                 .field('phone', '9998881234')
                 .field('bio', 'I am Phil')
-                .attach('image', `${__dirname}/assets/me.jpg`);
+                .attach('awsPhoto', `${__dirname}/assets/me.jpg`);
             })
             .then(res => {
               expect(res.status).toEqual(200);
@@ -39,7 +39,7 @@ describe('Testing Profile Model', () => {
               expect(res.body.phone).toEqual('9998881234');
               expect(res.body.residenceId).toEqual(residence.id.toString());
               expect(res.body.bio).toEqual('I am Phil');
-              expect(res.body.photoURI).toExist();
+              expect(res.body.awsPhoto).toExist();
             });
         });
     });
@@ -69,7 +69,7 @@ describe('Testing Profile Model', () => {
                 .field('phone', '9998881234')
                 .field('residenceId', residence.id.toString())
                 .field('bio', 'I am Phil')
-                .attach('image', `${__dirname}/assets/me.jpg`)
+                .attach('awsPhoto', `${__dirname}/assets/me.jpg`)
                 .then(res => {
                   throw res;
                 })
@@ -106,7 +106,7 @@ describe('Testing Profile Model', () => {
                   expect(res.body.phone).toEqual('9998881234');
                   expect(res.body.bio).toEqual('I am Phil');
                   expect(res.body.residenceId).toEqual(residence.id.toString());
-                  expect(res.body.photoURI).toExist();
+                  expect(res.body.awsPhoto).toExist();
                 });
             });
         });
@@ -156,7 +156,7 @@ describe('Testing Profile Model', () => {
                   expect(res.body.phone).toEqual('9998881234');
                   expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
                   expect(res.body.residenceId).toEqual(residence.id.toString());
-                  expect(res.body.photoURI).toExist();
+                  expect(res.body.awsPhoto).toExist();
                 });
             });
         });
