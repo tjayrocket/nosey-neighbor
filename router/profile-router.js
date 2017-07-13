@@ -18,7 +18,7 @@ profileRouter.post('/api/profiles', bearerAuth, s3Upload('image'), (req, res, ne
     userId: req.user._id,
   })
     .save()
-    .then(profile => res.json(profile))
+    .then(profile => res.status(201).json(profile))
     .catch(next);
 });
 
@@ -34,6 +34,6 @@ profileRouter.put('/api/profiles/:id', bearerAuth, jsonParser, (req, res, next) 
 
 profileRouter.get('/api/profiles/:id', (req, res, next) => {
   Profile.findOne({ _id: req.params.id })
-    .then(profile => res.json(profile))
+    .then(profile => res.status(202).json(profile))
     .catch(next);
 });
