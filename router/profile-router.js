@@ -14,11 +14,11 @@ profileRouter.post('/api/profiles', bearerAuth, s3Upload('image'), (req, res, ne
     residenceId: req.body.residenceId,
     phone: req.body.phone,
     bio: req.body.bio,
-    photoURI: req.s3Data.Location,
+    image: req.s3Data.Location,
     userId: req.user._id,
   })
     .save()
-    .then(profile => res.json(profile))
+    .then(profile => res.status(201).json(profile))
     .catch(next);
 });
 
@@ -28,7 +28,7 @@ profileRouter.put('/api/profiles/:id', bearerAuth, jsonParser, (req, res, next) 
     runValidators: true,
   };
   Profile.findByIdAndUpdate(req.params.id, req.body, options)
-    .then(profile => res.json(profile))
+    .then(profile => res.status(202).json(profile))
     .catch(next);
 });
 
