@@ -17,14 +17,14 @@ describe('Authentication', () => {
   afterEach(cleanDB);
 
   describe('Sign Up POST', () => {
-    it('should return a 200 status and a token.', () => {
+    it('should return a 201 status and a token.', () => {
       return superagent.post(`${API_URL}/api/signup`)
         .send({
           email: 'bill@test.com',
           password: 'testPASS',
         })
         .then(res => {
-          expect(res.status).toEqual(200);
+          expect(res.status).toEqual(201);
           expect(res.text).toExist();
           expect(res.text.length > 1).toBeTruthy();
         });
