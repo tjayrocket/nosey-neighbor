@@ -20,7 +20,7 @@ describe('Testing Residence Model', () => {
   describe('Testing GET', () => {
     it('should return 200 status code and an array of residences.', () => {
       return mockResidence.createOne()
-        .then((tempResidence) => {
+        .then(tempResidence => {
           return superagent.get(`${API_URL}/api/residences`)
             .then(res => {
               expect(res.status).toEqual(200);
@@ -31,7 +31,7 @@ describe('Testing Residence Model', () => {
     });
     it('should return 200 status code and a single residence object.', () => {
       return mockResidence.createOne()
-        .then((tempResidence) => {
+        .then(tempResidence => {
           return superagent.get(`${API_URL}/api/residences/${tempResidence.id}`)
             .then(res => {
               expect(res.status).toEqual(200);
@@ -129,7 +129,6 @@ describe('Testing Residence Model', () => {
             .then((res) => {
               let newOccupants = ['homer', 'marge', 'bart', 'lisa', 'maggie'];
               return superagent.put(`${API_URL}/api/residences/${res.body}`)
-                // .set('Authorization', `Bearer ${userData.token}`) //disabled in order to test auth
                 .send({
                   occupants: newOccupants
                 })
