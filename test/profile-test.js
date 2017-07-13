@@ -39,7 +39,7 @@ describe('Testing Profile Model', () => {
               expect(res.body.phone).toEqual('9998881234');
               expect(res.body.residenceId).toEqual(residence.id.toString());
               expect(res.body.bio).toEqual('I am Phil');
-              expect(res.body.photoURI).toExist();
+              expect(res.body.image).toExist();
             });
         });
     }).timeout(3000);
@@ -106,7 +106,7 @@ describe('Testing Profile Model', () => {
                   expect(res.body.phone).toEqual('9998881234');
                   expect(res.body.bio).toEqual('I am Phil');
                   expect(res.body.residenceId).toEqual(residence.id.toString());
-                  expect(res.body.photoURI).toExist();
+                  expect(res.body.image).toExist();
                 });
             });
         });
@@ -156,7 +156,7 @@ describe('Testing Profile Model', () => {
                   expect(res.body.phone).toEqual('9998881234');
                   expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
                   expect(res.body.residenceId).toEqual(residence.id.toString());
-                  expect(res.body.photoURI).toExist();
+                  expect(res.body.image).toExist();
                 });
             });
         });

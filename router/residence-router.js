@@ -5,7 +5,7 @@ const { Router } = require('express');
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
 const Residence = require('../model/residence.js');
 
-const residenceRouter = (module.exports = new Router());
+const residenceRouter = module.exports = new Router();
 
 residenceRouter.post(
   '/api/residences',
