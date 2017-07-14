@@ -49,21 +49,32 @@ In it's current configuration - forking the repository from [GitHub](https://git
 
 Upon receipt of the application, in the command line the necessary dependencies need to be installed for full functionality. This can be done by using the following command:
 
-```
 npm i  
-```
 
 This will install all necessary dependencies for deployment and use.
 
 ## How To Use  
 
-PLACEHOLDER
+Future Placement of this app will provide a simple, easy-to-navigate front-end UI for the placement and administration of users, residences and incidents.  
 
-## Architecture
+This is currently not in Place. We here at Nosey-Neighbor, apologize for this.  
+
+Currently, utilizing interface software, like Postman is the only way to currently manipulate the data and store it for future use. This is presented by Spencer and will be added to some random YouTube for public scrutiny.
+
+##  Architecture
 
 ### Overview
 
-Nosey Neighbor is structured on a Model View Controller (MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a Mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the Heroku platform.  
+Nosey Neighbor is structured on a Model View Controller(MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the heroku platform.  
+
+Individual resources (the user-supplied data) have dedicated router files located in the route folder. In addition to providing an interface to the complimentary controller files, these files also parse the json content in the incoming request (where applicable) and create and populate a req.body property using the npm package parse-body. For details about the input and output of routes, see the Routes section below.
+
+These resources also have dedicated controller files. These files are the interface between the routers (view) and the model files and mongo database(model). The controllers take in a request from a route and call the necessary functions to interact with the model. They then return a response to the route once a request has been processed in the model:
+
+Finally, the controller files call the constructor methods in the "model" files to construct new resource objects in memory.
+mongoose: The controller files leverage the required mongoose client module to create new schemas in the mongo database and to execute CRUD operations on mongo documents.  
+
+The supported Resources (Models) are listed in detail below in the Models Section.  
 
 ### Middleware  
 
@@ -75,7 +86,7 @@ The Following Middleware Packages are used in the current build and are required
 * CORS (Makes API Public)
 * DOTENV (For Environment Variables)
 * EXPRESS (Handles Routes)
-* FS-EXTRA (For working with the File System)
+* FS-EXTRA (For working with the File Sysytem)
 * JSONWEBTOKEN (For Authorization)
 * MONGOOSE (Interacting with MongoDB)
 * MULTER (For Multipart/Form data)
@@ -91,7 +102,7 @@ The Following Middleware Packages are used for the development and testing proce
 * MOCHA (Testing)
 * MORGAN (HTTP Request Logger)
 * NYC (For Code Coverage)
-* SUPERAGENT (HTTP Request Library)
+* SUPERAGENT (Http Request Library)
 
 ## Models  
 
@@ -255,17 +266,18 @@ Personally, as the guy who loves the worst things about the internet, I don't li
 
   * POST: token + name + residenceId + phone + bio => whole object, 201  
 
-This route takes in TOKEN authorization to allow a user to create a new profile, attach a S3 hosted image to the profile and also update any of the other information they desire for ease of use and identification. In case of suspicious activity, ya know?  
+This route takes in TOKEN authorization to allow a user to creat a new profile, attach a S3 hosted image to the profile and also update any of the other information they desire for ease of use and identification. In case of suspicious activity, ya know?  
 
   * PUT: /profileId + token + phone &/|| bio => 202  
 
-This route, requiring TOKEN authorization, allows a user to update and change information to a specific instance of a profile, as found by the user-supplied PROFILE_ID.  
+This route, rquiring TOKEN authorization, allows a user to update and change information to a specific instance of a profile, as found by the user-supplied PROFILE_ID.  
 
   * GET: /profileId => whole object, 200  
 
 This route allows a user to search and view a specific profile by using the PROFILE_ID to find it.  
 
 This can be used nefariously. I approve.
+
 
 ## About Us
 

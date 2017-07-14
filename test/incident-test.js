@@ -44,8 +44,7 @@ describe('Testing Incident Model', () => {
     });
 
 
-    it('should return 400 bad request', () => {
-
+    it('should return 400 - Invalid Body', () => {
       return mockUser.createOne()
         .then(mockUserData => {
           return superagent.post(`${API_URL}/api/incidents`)
@@ -91,8 +90,8 @@ describe('Testing Incident Model', () => {
     });
   });
 
-  describe('Incident GET - All', () => {
-    it('should return 200 and an array of incidents', () => {
+  describe('Testing GET - Incident Array', () => {
+    it('should return 200 - Array of Incidents', () => {
       return mockIncident.createOne().then(() => {
         return superagent
           .get(`${API_URL}/api/incidents`)
@@ -104,8 +103,8 @@ describe('Testing Incident Model', () => {
     });
   });
 
-  describe('Incident GET - One', () => {
-    it('should return 200 and a single incident', () => {
+  describe('Testing GET - Single Incident', () => {
+    it('should return 200 - Single Incidenrt Report', () => {
       return mockIncident.createOne().then(mockIncidentData => {
         return superagent
           .get(`${API_URL}/api/incidents/${mockIncidentData.id}`)

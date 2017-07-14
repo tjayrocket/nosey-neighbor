@@ -16,6 +16,14 @@ residenceRouter.post(
   jsonParser,
   bearerAuth,
   (req, res, next) => {
+<<<<<<< HEAD
+    new Residence(req.body)
+      .save()
+      .then(residence => res.status(201).json(residence))
+      .catch(next);
+  }
+);
+=======
     let body = req.body;
     return superagent.get('https://maps.googleapis.com/maps/api/streetview')
       .query({
@@ -45,6 +53,7 @@ residenceRouter.post(
       });
 
   });
+>>>>>>> 3024f1322577a0daffa2ef9801ea6da8427f2942
 
 residenceRouter.get('/api/residences/:id', (req, res, next) => {
   Residence.findById(req.params.id)

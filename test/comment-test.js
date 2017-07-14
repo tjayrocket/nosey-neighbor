@@ -16,7 +16,7 @@ describe('Testing Comment Model', () => {
   after(server.stop);
   afterEach(cleanDB);
 
-  describe('Comment POST', () => {
+  describe('Testing POST', () => {
     it('should return 201 and the incident', () => {
       return mockIncident.createOne().then(incidentData => {
         return superagent
