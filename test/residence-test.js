@@ -52,7 +52,6 @@ describe('Testing Residence Model', () => {
               address: '742 Evergreen Terrace, Springfield'
             })
             .then(res => {
-              console.log(res.body);
               expect(res.status).toEqual(201);
               expect(res.body).toExist();
               expect(res.body.image).toExist();
@@ -72,7 +71,7 @@ describe('Testing Residence Model', () => {
             });
         });
     });
-    it('should return 409 db conflict', () => {
+    it('should return 409 database conflict', () => {
       return mockUser.createOne()
         .then(userData => {
           return superagent.post(`${API_URL}/api/residences`)
@@ -93,7 +92,7 @@ describe('Testing Residence Model', () => {
         });
     });
   });
-  describe('Testing PUT', () => {
+  describe('Residence PUT', () => {
     it('should return 202 and the new residence', () => {
       return mockUser.createOne()
         .then(userData => {
