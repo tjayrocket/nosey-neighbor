@@ -23,6 +23,8 @@ describe('Testing Incident Model', () => {
 
 
 
+
+
   describe('Incident POST', () => {
     it('should return 201 and the incident', () => {
       return mockUser.createOne()
