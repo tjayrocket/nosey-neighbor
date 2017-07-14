@@ -57,13 +57,26 @@ This will install all necessary dependencies for deployment and use.
 
 ## How To Use  
 
-PLACEHOLDER
+Future Placement of this app will provide a simple, easy-to-navigate front-end UI for the placement and administration of users, residences and incidents.  
 
-## Architecture
+This is currently not in Place. We here at Nosey-Neighbor, apologize for this.  
+
+Currently, utilizing interface software, like Postman is the only way to currently manipulate the data and store it for future use. This is presented by Spencer and will be added to some random YouTube for public scrutiny.
+
+#  Architecture
 
 ### Overview
 
-Nosey Neighbor is structured on a Model View Controller (MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a Mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the Heroku platform.  
+Nosey Neighbor is structured on a Model View Controller(MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a Mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the Heroku platform.  
+
+Individual resources (the user-supplied data) have dedicated router files located in the route folder. In addition to providing an interface to the complimentary controller files, these files also parse the json content in the incoming request (where applicable) and create and populate a req.body property using the npm package parse-body. For details about the input and output of routes, see the Routes section below.
+
+These resources also have dedicated controller files. These files are the interface between the routers (view) and the model files and Mongo database(model). The controllers take in a request from a route and call the necessary functions to interact with the model. They then return a response to the route once a request has been processed in the model:
+
+Finally, the controller files call the constructor methods in the "model" files to construct new resource objects in memory.
+mongoose: The controller files leverage the required mongoose client module to create new schemas in the mongo database and to execute CRUD operations on Mongo documents.  
+
+The supported Resources (Models) are listed in detail below in the Models Section.  
 
 ### Middleware  
 
@@ -270,7 +283,13 @@ This can be used nefariously. I approve.
 ## About Us
 
 * **Spencer Gietzen**  
-  * I am a software developer and I take my development very seriously. I love coding and outside of Code Fellows, it is one of my main hobbies. I've worked with many different programming languages, but ultimatly JavaScript is what I emerged with because of its versatility, advancement, and rapidly growing adoption in the real world. This project was awesome to work on and working with my team was very easy and we didn't really have any problems. Everyone did there part and we all contributed to this entire project. I can't wait to start my career as a software developer and that's why I'm doing what I'm doing right now.
+  * I am a software developer and I take my development very seriously. I love coding and outside of Code Fellows, it is one of my main hobbies. I've worked with many different programming languages, but ultimately JavaScript is what I emerged with because of its versatility, advancement, and rapidly growing adoption in the real world. This project was awesome to work on and working with my team was very easy and we didn't really have any problems. Everyone did there part and we all contributed to this entire project. I can't wait to start my career as a software developer and that's why I'm doing what I'm doing right now.
 
 * **Steve Walsh**
-  * I was born and raised in Boston where I first found my love for computers visiting the Computer Museum. I spent middle and high school working for my school's IT department where I learned network infrastructure, the NT server environment, cabling, etc. I continued to work there through college, where I earned a Bachelor's of Science in 2007. I did freelance computer work (hardware/OS) and front-end development on CMS platforms such as Joomla and WordPress, including a production e-commerce site for my own business. I joined another business as a partner in 2010 and left that business in 2017 to pursue software development full-time. I love building things and solving complex problems in a collaborative environment.  That's why I love software development!
+  * I was born and raised in Boston where I first found my love for computers visiting the Computer Museum. I spent middle and high school working for my school's IT department where I learned network infrastructure, the NT server environment, cabling, etc. I continued to work there through college, where I earned a Bachelor's of Science in 2007. I did freelance computer work (hardware/OS) and front-end development on CMS platforms such as Joomla and WordPress, including a production e-commerce site for my own business. I joined another business as a partner in 2010 and left that business in 2017 to pursue software development full-time. I love building things and solving complex problems in a collaborative environment.  That's why I love software development!  
+
+* **Stephanie Dover**
+  * I have a background in business and specialized in process improvement. As part of doing process improvement at my previous job, I had to build an intranet for 200+ users. I did so by using tools that other developers built, but I dreamed of doing it better. I wanted to learn to code so that I could make my own tools tailor made for the company. I learned a little bit and loved it so much I decided to learn more and become a software developer. Being a software developer feeds my passion for problem solving and learning. I enjoyed working with my project team. We had a great team dynamic and work well together.
+
+* **T.Jay**  
+  * Not much is known about T.Jay. Ever since the Spanish American war when he disappeared fighting the Kraken off the coast of Bermuda. He re-emerged in 2008 during an earthquake in the Japan Sea and has since walked the earth, getting into adventures with his loyal companion, Mr. Piggleton. He remains an enigma to this day...
