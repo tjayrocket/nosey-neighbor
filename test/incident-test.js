@@ -57,8 +57,7 @@ describe('Testing Incident Model', () => {
     });
 
 
-    it('should return 401 - Unauthorized Access', () => {
-
+    it('should return 401 unauthorized', () => {
       return mockUser.createOne()
         .then(() => {
           return mockResidence.createOne()
@@ -103,6 +102,7 @@ describe('Testing Incident Model', () => {
       });
     });
   });
+
   describe('Testing GET - Single Incident', () => {
     it('should return 200 - Single Incidenrt Report', () => {
       return mockIncident.createOne().then(mockIncidentData => {

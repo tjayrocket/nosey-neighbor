@@ -90,6 +90,7 @@ describe('Testing Residence Model', () => {
         });
     });
   });
+
   describe('Testing PUT', () => {
     it('should return 202 and the new residence', () => {
       return mockUser.createOne()
