@@ -20,8 +20,11 @@ describe('Testing Incident Model', () => {
   after(server.stop);
   afterEach(cleanDB);
 
+
+
+
   describe('Incident POST', () => {
-    it('should return 201 and the residence', () => {
+    it('should return 201 and the incident', () => {
       return mockUser.createOne()
         .then(mockUserData => {
           return mockResidence.createOne()
@@ -30,18 +33,24 @@ describe('Testing Incident Model', () => {
                 .set('Authorization', `Bearer ${mockUserData.token}`)
                 .send({
                   type: 'HOA',
-                  description: 'Turd On lawn',
+                  description: 'Grass is 1/16th" too long',
                   residenceId: mockResidenceData.id,
                 })
                 .then(res => {
                   expect(res.status).toEqual(201);
                   expect(res.body.type).toEqual('HOA');
-                  expect(res.body.description).toEqual('Turd On lawn');
+                  expect(res.body.description).toEqual('Grass is 1/16th" too long');
                   expect(res.body.residenceId.toString()).toEqual(mockResidenceData.id.toString());
                 });
             });
         });
     });
+
+
+
+
+
+
 
 
     it('should return 400 bad request', () => {
