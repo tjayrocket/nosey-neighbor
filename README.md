@@ -1,6 +1,6 @@
-#README
+# README
 
-#Nosey Neighbor  
+# Nosey Neighbor  
 
 *There are **dangerous people** in this world.*  
 
@@ -21,13 +21,13 @@
 *It may just save us all...*
 
 
-##Overview  
+## Overview  
 
 * This RESTful API provides the necessary back-end infrastructure to create, read, update and delete data related to the day-to-day operation of Home Owners Association/Neighborhood watch duties.  
 
 * Currently, access to technology that is capable of providing this functionality resides within other, more cumbersome applications or may be created using various office-based applications and our over-all goal is to provide the eagle-eyed member of a neighborhood watch member or administrator for a Home Owners Association a simple-to-use platform for recording any incidents or infraction for display to the neighborhood members and prospective neighbors.
 
-###Our App In Use
+### Our App In Use
 
 In real world deployment - Our app provides a database, utilizing several middle-ware applications and MongoDB, of all instances of neighborly conduct ranging from H.O.A. violations, Medical emergencies and even Criminal/Civil infractions.  
 
@@ -43,27 +43,29 @@ Some documented features include:
 
 * The ability to remove any incident report will be relegated only to the administrator of the DB to ensure total transparency for the protection and scrutiny of all users. The app will publicly display any infractions for review by the other users in a predetermined area, and allow for other users to comment publicly on any incident.  
 
-##Installation  
+## Installation  
 
 In it's current configuration - forking the repository from [GitHub](https://github.com/tjayrocket/nosey-neighbor) and cloning the repository to your local system is the most direct way to install this app for use.  
 
 Upon receipt of the application, in the command line the necessary dependencies need to be installed for full functionality. This can be done by using the following command:
 
+```
 npm i  
+```
 
 This will install all necessary dependencies for deployment and use.
 
-##How To Use  
+## How To Use  
 
 PLACEHOLDER
 
 ## Architecture
 
-###Overview
+### Overview
 
 Nosey Neighbor is structured on a Model View Controller(MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the heroku platform.  
 
-###Middleware  
+### Middleware  
 
 The Following Middleware Packages are used in the current build and are required for full operation of this application:  
 
@@ -91,7 +93,7 @@ The Following Middleware Packages are used for the development and testing proce
 * NYC (For Code Coverage)
 * SUPERAGENT (Http Request Library)
 
-##Models  
+## Models  
 
 This application uses 5 unique models:   
 
@@ -165,7 +167,7 @@ Middleware Required:
 Description:  
 This model handles user generated comments and attaches them to the appropriate incidents for search at a later time.
 
-##Routes
+## Routes
 
 * **USER**
 
