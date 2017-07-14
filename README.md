@@ -1,6 +1,6 @@
-#README
+# README
 
-#Nosey Neighbor  
+# Nosey Neighbor  
 
 *There are **dangerous people** in this world.*  
 
@@ -21,13 +21,13 @@
 *It may just save us all...*
 
 
-##Overview  
+## Overview  
 
 * This RESTful API provides the necessary back-end infrastructure to create, read, update and delete data related to the day-to-day operation of Home Owners Association/Neighborhood watch duties.  
 
 * Currently, access to technology that is capable of providing this functionality resides within other, more cumbersome applications or may be created using various office-based applications and our over-all goal is to provide the eagle-eyed member of a neighborhood watch member or administrator for a Home Owners Association a simple-to-use platform for recording any incidents or infraction for display to the neighborhood members and prospective neighbors.
 
-###Our App In Use
+### Our App In Use
 
 In real world deployment - Our app provides a database, utilizing several middle-ware applications and MongoDB, of all instances of neighborly conduct ranging from H.O.A. violations, Medical emergencies and even Criminal/Civil infractions.  
 
@@ -43,27 +43,29 @@ Some documented features include:
 
 * The ability to remove any incident report will be relegated only to the administrator of the DB to ensure total transparency for the protection and scrutiny of all users. The app will publicly display any infractions for review by the other users in a predetermined area, and allow for other users to comment publicly on any incident.  
 
-##Installation  
+## Installation  
 
 In it's current configuration - forking the repository from [GitHub](https://github.com/tjayrocket/nosey-neighbor) and cloning the repository to your local system is the most direct way to install this app for use.  
 
 Upon receipt of the application, in the command line the necessary dependencies need to be installed for full functionality. This can be done by using the following command:
 
+```
 npm i  
+```
 
 This will install all necessary dependencies for deployment and use.
 
-##How To Use  
+## How To Use  
 
 PLACEHOLDER
 
 ## Architecture
 
-###Overview
+### Overview
 
-Nosey Neighbor is structured on a Model View Controller(MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the heroku platform.  
+Nosey Neighbor is structured on a Model View Controller (MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a Mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the Heroku platform.  
 
-###Middleware  
+### Middleware  
 
 The Following Middleware Packages are used in the current build and are required for full operation of this application:  
 
@@ -73,7 +75,7 @@ The Following Middleware Packages are used in the current build and are required
 * CORS (Makes API Public)
 * DOTENV (For Environment Variables)
 * EXPRESS (Handles Routes)
-* FS-EXTRA (For working with the File Sysytem)
+* FS-EXTRA (For working with the File System)
 * JSONWEBTOKEN (For Authorization)
 * MONGOOSE (Interacting with MongoDB)
 * MULTER (For Multipart/Form data)
@@ -89,9 +91,9 @@ The Following Middleware Packages are used for the development and testing proce
 * MOCHA (Testing)
 * MORGAN (HTTP Request Logger)
 * NYC (For Code Coverage)
-* SUPERAGENT (Http Request Library)
+* SUPERAGENT (HTTP Request Library)
 
-##Models  
+## Models  
 
 This application uses 5 unique models:   
 
@@ -165,7 +167,7 @@ Middleware Required:
 Description:  
 This model handles user generated comments and attaches them to the appropriate incidents for search at a later time.
 
-##Routes
+## Routes
 
 * **USER**
 
@@ -253,14 +255,22 @@ Personally, as the guy who loves the worst things about the internet, I don't li
 
   * POST: token + name + residenceId + phone + bio => whole object, 201  
 
-This route takes in TOKEN authorization to allow a user to creat a new profile, attach a S3 hosted image to the profile and also update any of the other information they desire for ease of use and identification. In case of suspicious activity, ya know?  
+This route takes in TOKEN authorization to allow a user to create a new profile, attach a S3 hosted image to the profile and also update any of the other information they desire for ease of use and identification. In case of suspicious activity, ya know?  
 
   * PUT: /profileId + token + phone &/|| bio => 202  
 
-This route, rquiring TOKEN authorization, allows a user to update and change information to a specific instance of a profile, as found by the user-supplied PROFILE_ID.  
+This route, requiring TOKEN authorization, allows a user to update and change information to a specific instance of a profile, as found by the user-supplied PROFILE_ID.  
 
   * GET: /profileId => whole object, 200  
 
 This route allows a user to search and view a specific profile by using the PROFILE_ID to find it.  
 
 This can be used nefariously. I approve.
+
+## About Us
+
+* **Spencer Gietzen**  
+  * I am a software developer and I take my development very seriously. I love coding and outside of Code Fellows, it is one of my main hobbies. I've worked with many different programming languages, but ultimately JavaScript is what I emerged with because of its versatility, advancement, and rapidly growing adoption in the real world. This project was awesome to work on and working with my team was very easy and we didn't really have any problems. Everyone did there part and we all contributed to this entire project. I can't wait to start my career as a software developer and that's why I'm doing what I'm doing right now.
+
+* **Stephanie Dover**
+  * I have a background in business and specialized in process improvement. As part of doing process improvement at my previous job, I had to build an intranet for 200+ users. I did so by using tools that other developers built, but I dreamed of doing it better. I wanted to learn to code so that I could make my own tools tailor made for the company. I learned a little bit and loved it so much I decided to learn more and become a software developer. Being a software developer feeds my passion for problem solving and learning. I enjoyed working with my project team. We had a great team dynamic and work well together. 

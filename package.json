@@ -28,7 +28,6 @@
     "expect": "^1.20.2",
     "faker": "^4.1.0",
     "mocha": "^3.4.2",
-    "morgan": "^1.8.2",
     "nyc": "^11.0.3"
   },
   "dependencies": {
