@@ -63,7 +63,7 @@ PLACEHOLDER
 
 ### Overview
 
-Nosey Neighbor is structured on a Model View Controller(MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the heroku platform.  
+Nosey Neighbor is structured on a Model View Controller (MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a Mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the Heroku platform.  
 
 ### Middleware  
 
@@ -75,7 +75,7 @@ The Following Middleware Packages are used in the current build and are required
 * CORS (Makes API Public)
 * DOTENV (For Environment Variables)
 * EXPRESS (Handles Routes)
-* FS-EXTRA (For working with the File Sysytem)
+* FS-EXTRA (For working with the File System)
 * JSONWEBTOKEN (For Authorization)
 * MONGOOSE (Interacting with MongoDB)
 * MULTER (For Multipart/Form data)
@@ -91,7 +91,7 @@ The Following Middleware Packages are used for the development and testing proce
 * MOCHA (Testing)
 * MORGAN (HTTP Request Logger)
 * NYC (For Code Coverage)
-* SUPERAGENT (Http Request Library)
+* SUPERAGENT (HTTP Request Library)
 
 ## Models  
 
@@ -255,14 +255,19 @@ Personally, as the guy who loves the worst things about the internet, I don't li
 
   * POST: token + name + residenceId + phone + bio => whole object, 201  
 
-This route takes in TOKEN authorization to allow a user to creat a new profile, attach a S3 hosted image to the profile and also update any of the other information they desire for ease of use and identification. In case of suspicious activity, ya know?  
+This route takes in TOKEN authorization to allow a user to create a new profile, attach a S3 hosted image to the profile and also update any of the other information they desire for ease of use and identification. In case of suspicious activity, ya know?  
 
   * PUT: /profileId + token + phone &/|| bio => 202  
 
-This route, rquiring TOKEN authorization, allows a user to update and change information to a specific instance of a profile, as found by the user-supplied PROFILE_ID.  
+This route, requiring TOKEN authorization, allows a user to update and change information to a specific instance of a profile, as found by the user-supplied PROFILE_ID.  
 
   * GET: /profileId => whole object, 200  
 
 This route allows a user to search and view a specific profile by using the PROFILE_ID to find it.  
 
 This can be used nefariously. I approve.
+
+## About Us
+
+* **Spencer Gietzen**  
+  * I am a software developer and I take my development very seriously. I love coding and outside of Code Fellows, it is one of my main hobbies. I've worked with many different programming languages, but ultimatly JavaScript is what I emerged with because of its versatility, advancement, and rapidly growing adoption in the real world. This project was awesome to work on and working with my team was very easy and we didn't really have any problems. Everyone did there part and we all contributed to this entire project. I can't wait to start my career as a software developer and that's why I'm doing what I'm doing right now.
