@@ -1,6 +1,6 @@
-#README
+# README
 
-#Nosey Neighbor  
+# Nosey Neighbor  
 
 *There are **dangerous people** in this world.*  
 
@@ -21,13 +21,13 @@
 *It may just save us all...*
 
 
-##Overview  
+## Overview  
 
 * This RESTful API provides the necessary back-end infrastructure to create, read, update and delete data related to the day-to-day operation of Home Owners Association/Neighborhood watch duties.  
 
 * Currently, access to technology that is capable of providing this functionality resides within other, more cumbersome applications or may be created using various office-based applications and our over-all goal is to provide the eagle-eyed member of a neighborhood watch member or administrator for a Home Owners Association a simple-to-use platform for recording any incidents or infraction for display to the neighborhood members and prospective neighbors.
 
-###Our App In Use
+### Our App In Use
 
 In real world deployment - Our app provides a database, utilizing several middle-ware applications and MongoDB, of all instances of neighborly conduct ranging from H.O.A. violations, Medical emergencies and even Criminal/Civil infractions.  
 
@@ -43,7 +43,7 @@ Some documented features include:
 
 * The ability to remove any incident report will be relegated only to the administrator of the DB to ensure total transparency for the protection and scrutiny of all users. The app will publicly display any infractions for review by the other users in a predetermined area, and allow for other users to comment publicly on any incident.  
 
-##Installation  
+## Installation  
 
 In it's current configuration - forking the repository from [GitHub](https://github.com/tjayrocket/nosey-neighbor) and cloning the repository to your local system is the most direct way to install this app for use.  
 
@@ -53,17 +53,30 @@ npm i
 
 This will install all necessary dependencies for deployment and use.
 
-##How To Use  
+## How To Use  
 
-PLACEHOLDER
+Future Placement of this app will provide a simple, easy-to-navigate front-end UI for the placement and administration of users, residences and incidents.  
 
-## Architecture
+This is currently not in Place. We here at Nosey-Neighbor, apologize for this.  
 
-###Overview
+Currently, utilizing interface software, like Postman is the only way to currently manipulate the data and store it for future use. This is presented by Spencer and will be added to some random YouTube for public scrutiny.
+
+##  Architecture
+
+### Overview
 
 Nosey Neighbor is structured on a Model View Controller(MVC) architecture pattern.  The base technologies are node.js server, node.http module, express middleware, and a mongo database. This architecture is currently deployed in a two tier environment(staging, production), leveraging the heroku platform.  
 
-###Middleware  
+Individual resources (the user-supplied data) have dedicated router files located in the route folder. In addition to providing an interface to the complimentary controller files, these files also parse the json content in the incoming request (where applicable) and create and populate a req.body property using the npm package parse-body. For details about the input and output of routes, see the Routes section below.
+
+These resources also have dedicated controller files. These files are the interface between the routers (view) and the model files and mongo database(model). The controllers take in a request from a route and call the necessary functions to interact with the model. They then return a response to the route once a request has been processed in the model:
+
+Finally, the controller files call the constructor methods in the "model" files to construct new resource objects in memory.
+mongoose: The controller files leverage the required mongoose client module to create new schemas in the mongo database and to execute CRUD operations on mongo documents.  
+
+The supported Resources (Models) are listed in detail below in the Models Section.  
+
+### Middleware  
 
 The Following Middleware Packages are used in the current build and are required for full operation of this application:  
 
@@ -91,7 +104,7 @@ The Following Middleware Packages are used for the development and testing proce
 * NYC (For Code Coverage)
 * SUPERAGENT (Http Request Library)
 
-##Models  
+## Models  
 
 This application uses 5 unique models:   
 
@@ -165,7 +178,7 @@ Middleware Required:
 Description:  
 This model handles user generated comments and attaches them to the appropriate incidents for search at a later time.
 
-##Routes
+## Routes
 
 * **USER**
 
