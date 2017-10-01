@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - '7'
+services:
+  - mongodb
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.8
+      - g++-4.8
+env:
+  - CXX=g++-4.8 APP_SECRET='sd asddas dasd a' MONGODB_URI='mongodb://localhost/travis' AWS_BUCKET='nosy-neighbor-profile' AWS_ACCESS_KEY_ID='fakekey' AWS_SECRET_ACCESS_KEY='fakekey' API_URL='http://localhost:7000' PORT=7000 STREET_VIEW_KEY='AIzaSyD7v1qn9ESlftxj3HIUrKcybFAvvBtMcHY' STREET_VIEW_RES='640x480'
+
+sudo: required
+before_script: npm i
+script:
+  - npm test
+  - npm run lint
