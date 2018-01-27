@@ -72,14 +72,14 @@ describe('Testing Comment Model', () => {
       return mockIncident.createOne().then(incidentData => {
         return (
           superagent
-          .post(`${API_URL}/api/comments`)
-          .send({
-            incidentId: incidentData.id,
-            content: 'Jannets dog was in my yard, digging in garden'
-          })
-          .catch(err => {
-            expect(err.status).toEqual(401);
-          })
+            .post(`${API_URL}/api/comments`)
+            .send({
+              incidentId: incidentData.id,
+              content: 'Jannets dog was in my yard, digging in garden'
+            })
+            .catch(err => {
+              expect(err.status).toEqual(401);
+            })
         );
       });
     });
